@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useReducer} from 'react';
 import {
   View,
   Text,
@@ -6,15 +6,78 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {LoginScreenImg} from '../asserts/images/image';
-// profile, eye, email
+import {initialState, reducer} from '../allReducers/loginReducer';
+import Toast from 'react-native-toast-message';
+import api from '../api';
 const LoginScreen = ({navigation}) => {
-  const [walletName, setWalletName] = useState('utkarsh');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [hidePassword, setHidePassword] = useState(true);
+
+  const handleChange = (field, value) => {
+    dispatch({type: 'SET_FIELD', field, value});
+  };
+
+  const validateFields = () => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!state.walletName) {
+      dispatch({type: 'SET_ERROR', error: 'Wallet name is required.'});
+      return false;
+    }
+    if (!state.email) {
+      dispatch({type: 'SET_ERROR', error: 'Email is required.'});
+      return false;
+    }
+    if (state.email && !re.test(String(state.email).toLowerCase())) {
+      dispatch({type: 'SET_ERROR', error: 'Invalid Email'});
+      return false;
+    }
+
+    if (!state.password) {
+      dispatch({type: 'SET_ERROR', error: 'Password is required.'});
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateFields()) return;
+    dispatch({type: 'SET_LOADING', loading: true});
+    dispatch({type: 'SET_ERROR', error: ''});
+
+    try {
+      console.log('in api calll ');
+      let request = {
+        url: 'auth/login',
+        data: {
+          walletName: state.walletName,
+          email: state.email,
+          password: state.password,
+        },
+      };
+      console.log('in api calll 2 ', request);
+      api
+        .post(request)
+        .then(response => {
+          console.log(response.data, '=======================>');
+          dispatch({type: 'SET_SUCCESS'});
+        })
+        .catch(error => {
+          console.log(error, 'check erooorrrrrrrrr======>');
+          dispatch({type: 'SET_ERROR', error: error.message});
+        });
+    } catch (error) {
+      dispatch({type: 'SET_ERROR', error: error.message});
+    } finally {
+      dispatch({type: 'SET_LOADING', loading: false});
+      dispatch({type: 'SET_ERROR', error: ''});
+    }
+    // }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,8 +95,8 @@ const LoginScreen = ({navigation}) => {
         {/* <Icon name="account" size={20} style={styles.icon} /> */}
         <TextInput
           style={styles.input}
-          value={walletName}
-          onChangeText={setWalletName}
+          value={state.walletName}
+          onChangeText={value => handleChange('walletName', value)}
           placeholder="Wallet Name"
         />
       </View>
@@ -43,8 +106,8 @@ const LoginScreen = ({navigation}) => {
 
         <TextInput
           style={styles.input}
-          value={email}
-          onChangeText={setEmail}
+          value={state.email}
+          onChangeText={value => handleChange('email', value)}
           placeholder="Email Address"
           keyboardType="email-address"
         />
@@ -55,8 +118,8 @@ const LoginScreen = ({navigation}) => {
 
         <TextInput
           style={styles.input}
-          value={password}
-          onChangeText={setPassword}
+          value={state.password}
+          onChangeText={value => handleChange('password', value)}
           placeholder="Password"
           secureTextEntry={hidePassword}
         />
@@ -64,12 +127,18 @@ const LoginScreen = ({navigation}) => {
           <Image source={LoginScreenImg?.eye} style={styles.icon} />
         </TouchableOpacity>
       </View>
+      {state.loading ? (
+        <ActivityIndicator />
+      ) : (
+        <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
+      )}
+      {state.error && <Text style={styles.error}>{state.error}</Text>}
+      {state.success && (
+        <Text style={styles.success}>User Logged in successfully!</Text>
+      )}
 
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => navigation.navigate('Home')}>
-        <Text style={styles.loginButtonText}>Login</Text>
-      </TouchableOpacity>
       <View
         style={{
           display: 'flex',
@@ -156,6 +225,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontSize: 16,
     fontWeight: '600',
+  },
+  error: {
+    color: 'red',
+  },
+  success: {
+    color: 'green',
   },
 });
 
