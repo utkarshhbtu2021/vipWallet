@@ -1,47 +1,47 @@
-import React, {Component} from 'react';
-import {Text, StyleSheet, View, FlatList} from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, View, FlatList, SafeAreaView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { digitCommaSeperation } from '../../utils/commaSeparater';
+import HeaderNav from './header';
 
-import {digitCommaSeperation} from '../../utils/commaSeparater';
+const DashBoard = () => {
+  const renderItem = ({ item, index }) => {
+    const backgroundColor = index % 2 === 0 ? 'rgba(1, 136, 248, 0.2)' : 'rgba(1, 192, 239, 0.19)';
+    return <View style={[styles.item, { backgroundColor }]}></View>;
+  };
 
-export default class DashBoard extends Component {
-  render() {
-    const renderItem = ({item, index}) => {
-      const backgroundColor =
-        index % 2 === 0 ? 'rgba(1, 136, 248, 0.2)' : 'rgba(1, 192, 239, 0.19)';
-      return <View style={[styles.item, {backgroundColor}]}></View>;
-    };
-    return (
-      <View style={styles.container}>
-        <View style={styles.headContainer}>
-          <View style={styles.headerView}>
-            <Text style={styles.heading}>My Net Worth</Text>
-          </View>
-          <View style={styles.dateTimeView}>
-            <Text style={styles.dateTimeText}>On Jun 25, 2024</Text>
-            <Text style={[styles.dateTimeText, {marginLeft: 8}]}>04 : 26</Text>
-          </View>
+  return (
+    <SafeAreaView style={styles.container}>
+      <HeaderNav />
+      <View style={styles.headContainer}>
+        <View style={styles.headerView}>
+          <Text style={styles.heading}>My Net Worth</Text>
         </View>
-        <View style={styles.circleContainer}>
-          <View style={styles.dottedCircle} />
-          <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 1}}
-            colors={['#01C0EF', '#0188F8']}
-            style={styles.circle}>
-            <Text style={styles.circleText}>Total USD</Text>
-            <Text style={styles.circleText}>{digitCommaSeperation(7264)}</Text>
-          </LinearGradient>
+        <View style={styles.dateTimeView}>
+          <Text style={styles.dateTimeText}>On Jun 25, 2024</Text>
+          <Text style={[styles.dateTimeText, { marginLeft: 8 }]}>04 : 26</Text>
         </View>
-        <FlatList
-          data={[1, 2, 4, 5, 6, 7]}
-          renderItem={renderItem}
-          keyExtractor={item => item.key}
-        />
       </View>
-    );
-  }
-}
+      <View style={styles.circleContainer}>
+        <View style={styles.dottedCircle} />
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          colors={['#01C0EF', '#0188F8']}
+          style={styles.circle}
+        >
+          <Text style={styles.circleText}>Total USD</Text>
+          <Text style={styles.circleText}>{digitCommaSeperation(7264)}</Text>
+        </LinearGradient>
+      </View>
+      <FlatList
+        data={[{ key: '1' }, { key: '2' }, { key: '4' }, { key: '5' }, { key: '6' }, { key: '7' }]}
+        renderItem={renderItem}
+        keyExtractor={item => item.key}
+      />
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   dateTimeView: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dottedCircle: {
-    width: 200, // Slightly larger than the inner circle
+    width: 200,
     height: 200,
     borderRadius: 100,
     borderWidth: 2,
@@ -111,3 +111,5 @@ const styles = StyleSheet.create({
   },
   headContainer: {},
 });
+
+export default DashBoard;

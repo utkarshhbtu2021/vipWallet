@@ -1,3 +1,5 @@
+import DashBoard from '../../modules/dashboard';
+
 export const SplashScreenImg = {
   wallet: require('./wallet.png'),
 };
@@ -15,3 +17,9 @@ export const SignUpScreenImg = {
   email: require('./email.png'),
   lock: require('./lock.png'),
 };
+
+export const DashboardScreenImg = {
+  DashBoardNav: require('./dashboard.png'),
+};
+
+
