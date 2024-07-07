@@ -1,22 +1,34 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
-import { DashboardScreenImg } from '../../asserts/images/image';
+import React, {useState} from 'react';
+import {DashboardScreenImg} from '../../asserts/images/image';
 
+export default function BottomNav({setHeading}) {
+  const [activeButton, setActiveButton] = useState('Dashboard');
 
-export default function BottomNav() {
+  const handlePress = (heading) => {
+    setActiveButton(heading);
+    setHeading(heading);
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => handlePress('Dashboard')}
+        style={styles.button}>
         <Image source={DashboardScreenImg.HomeButton} style={styles.icon} />
-        <Text style={styles.buttonText}>Home</Text>
+        <Text style={[styles.buttonText, activeButton === 'Dashboard' && styles.activeButtonText]}>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => handlePress('Block Matching Affiliate')}
+        style={styles.button}>
         <Image source={DashboardScreenImg.StackingButton} style={styles.icon} />
-        <Text style={styles.buttonText}>Block Matching</Text>
+        <Text style={[styles.buttonText, activeButton === 'Block Matching Affiliate' && styles.activeButtonText]}>Block Matching</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={() => handlePress('Staking')}
+        style={styles.button}>
         <Image source={DashboardScreenImg.StackingButton} style={styles.icon} />
-        <Text style={styles.buttonText}>Stacking</Text>
+        <Text style={[styles.buttonText, activeButton === 'Staking' && styles.activeButtonText]}>Stacking</Text>
       </TouchableOpacity>
     </View>
   );
@@ -48,5 +60,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     color: '#0C0C0C',
     fontWeight: '500',
+  },
+  activeButtonText: {
+    color: '#007BFF',
   },
 });

@@ -9,10 +9,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {digitCommaSeperation} from '../../../utils/commaSeparater';
-
-import HeaderNav from '../../home/header';
-import BottomNav from '../../home/bottomNav';
-import {DashboardScreenImg} from '../../asserts/images/image';
+import {DashboardScreenImg} from '../../../asserts/images/image';
 
 const DashBoard = () => {
   const renderItem = ({item, index}) => {
@@ -40,7 +37,6 @@ const DashBoard = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderNav />
       <View style={styles.headContainer}>
         <View style={styles.headerView}>
           <Text style={styles.heading}>My Net Worth</Text>
@@ -75,7 +71,6 @@ const DashBoard = () => {
         renderItem={renderItem}
         keyExtractor={item => item.key}
       />
-      <BottomNav />
     </SafeAreaView>
   );
 };
