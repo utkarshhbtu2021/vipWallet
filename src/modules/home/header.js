@@ -1,14 +1,14 @@
 import React from 'react';
 import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import {DashboardScreenImg} from '../../asserts/images/image';
+import { DashboardScreenImg } from '../../asserts/images/image';
 
-const HeaderNav = () => {
+const HeaderNav = ({heading}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
         <Image source={DashboardScreenImg?.DashBoardNav} style={styles.image} />
       </TouchableOpacity>
-      <Text style={styles.headText}>{'Dashboard'}</Text>
+      <Text style={styles.headText}>{heading}</Text>
     </View>
   );
 };

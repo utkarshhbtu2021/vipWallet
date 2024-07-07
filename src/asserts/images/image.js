@@ -1,5 +1,3 @@
-import DashBoard from '../../modules/dashboard';
-
 export const SplashScreenImg = {
   wallet: require('./wallet.png'),
 };

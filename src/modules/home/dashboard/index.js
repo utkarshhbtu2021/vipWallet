@@ -8,10 +8,10 @@ import {
   Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {digitCommaSeperation} from '../../utils/commaSeparater';
+import {digitCommaSeperation} from '../../../utils/commaSeparater';
 
-import HeaderNav from './header';
-import BottomNav from './bottomNav';
+import HeaderNav from '../../home/header';
+import BottomNav from '../../home/bottomNav';
 import {DashboardScreenImg} from '../../asserts/images/image';
 
 const DashBoard = () => {

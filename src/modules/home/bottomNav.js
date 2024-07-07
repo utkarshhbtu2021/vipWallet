@@ -1,6 +1,7 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import {DashboardScreenImg} from '../../asserts/images/image';
+import { DashboardScreenImg } from '../../asserts/images/image';
+
 
 export default function BottomNav() {
   return (
