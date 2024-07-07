@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, FlatList, SafeAreaView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { digitCommaSeperation } from '../../utils/commaSeparater';
 import HeaderNav from './header';
+import BottomNav from './bottomNav';
 
 const DashBoard = () => {
   const renderItem = ({ item, index }) => {
@@ -39,6 +40,7 @@ const DashBoard = () => {
         renderItem={renderItem}
         keyExtractor={item => item.key}
       />
+      <BottomNav/>
     </SafeAreaView>
   );
 };
