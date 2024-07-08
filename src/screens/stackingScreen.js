@@ -1,18 +1,17 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import Stackinginitate from '../modules/home/stacking/stackinginitate';
 
 const StackingScreen = ({navigation}) => (
   <View style={styles.container}>
-    {/* <Text>Details Screen</Text>
-    <Button title="Go to Home" onPress={() => navigation.navigate('Home')} /> */}
+    <Stackinginitate navigation={navigation} />
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#FFF',
   },
 });
 
