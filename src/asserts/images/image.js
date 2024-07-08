@@ -21,4 +21,5 @@ export const DashboardScreenImg = {
   HomeButton: require('./homeButton.png'),
   StackingButton: require('./stackingButton.png'),
   bitCoin:require('./bitcoin.png'),
+  roundedBitcoin:require('./roundedBitcoin.png')
 };
