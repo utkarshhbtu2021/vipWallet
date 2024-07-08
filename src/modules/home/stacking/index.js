@@ -9,8 +9,8 @@ const data = [
   // Add more items as needed
 ];
 
-const Stacking = () => {
-  const renderItem = ({item}) => <StackingCard title={item.title} />;
+const Stacking = ({navigation}) => {
+  const renderItem = ({item}) => <StackingCard title={item.title} navigation={navigation} />;
 
   return (
     <SafeAreaView style={{flex: 1, position: 'relative'}}>

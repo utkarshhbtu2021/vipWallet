@@ -18,7 +18,7 @@ const DashboardScreen = ({navigation}) => {
       case 'Block Matching Affiliate':
         return <BlockMatching />;
       case 'Staking':
-        return <Stacking />;
+        return <Stacking navigation={navigation} />;
       case 'Dashboard':
       default:
         return <DashBoard />;

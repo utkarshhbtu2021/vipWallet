@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
 
-const DetailsScreen = ({navigation}) => (
+const StackingScreen = ({navigation}) => (
   <View style={styles.container}>
-    <Text>Details Screen</Text>
-    <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+    {/* <Text>Details Screen</Text>
+    <Button title="Go to Home" onPress={() => navigation.navigate('Home')} /> */}
   </View>
 );
 
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailsScreen;
+export default StackingScreen;

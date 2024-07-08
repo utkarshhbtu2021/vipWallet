@@ -1,9 +1,13 @@
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 
-export default function FullFooterButton({BtnText, onBtnPress}) {
+export default function FullFooterButton({
+  BtnText,
+  onBtnPress,
+  backgroundColor = '#FFF',
+}) {
   return (
-    <View style={{backgroundColor: '#fff'}}>
+    <View style={{backgroundColor: backgroundColor}}>
       <View style={styles.buttonSection}>
         <TouchableOpacity
           style={styles.rightBtnContainer}

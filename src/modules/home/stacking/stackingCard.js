@@ -3,7 +3,7 @@ import React from 'react';
 import FullFooterButton from '../../../components/FullFooterButton';
 import {DashboardScreenImg} from '../../../asserts/images/image';
 
-const StackingCard = () => {
+const StackingCard = ({navigation}) => {
   const renderCircles = () => {
     return Array(5)
       .fill(null)
@@ -25,7 +25,11 @@ const StackingCard = () => {
         <Text style={styles.year}>(Year)</Text>
       </View>
       <View style={styles.circleContainer}>{renderCircles()}</View>
-      <FullFooterButton BtnText={'Stack Now'} />
+      <FullFooterButton
+        BtnText={'Stack Now'}
+        onBtnPress={() => navigation.navigate('Stacking')}
+        backgroundColor="#F6FAF9"
+      />
     </View>
   );
 };
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginHorizontal: 22.25,
-    marginBottom:50,
+    marginBottom: 50,
     top: 40,
     borderRadius: 3,
     height: 305,
