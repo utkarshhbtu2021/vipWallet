@@ -8,10 +8,8 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {LoginScreenImg} from '../asserts/images/image';
 import {initialState, reducer} from '../allReducers/loginReducer';
-import Toast from 'react-native-toast-message';
 import api from '../api';
 const LoginScreen = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -50,7 +48,6 @@ const LoginScreen = ({navigation}) => {
     dispatch({type: 'SET_ERROR', error: ''});
 
     try {
-      console.log('in api calll ');
       let request = {
         url: 'auth/login',
         data: {
@@ -59,15 +56,15 @@ const LoginScreen = ({navigation}) => {
           password: state.password,
         },
       };
-      console.log('in api calll 2 ', request);
       api
         .post(request)
         .then(response => {
-          console.log(response.data, '=======================>');
+          console.log(response.data, 'res=======');
           dispatch({type: 'SET_SUCCESS'});
+          navigation.navigate('Dashboard')
         })
         .catch(error => {
-          console.log(error, 'check erooorrrrrrrrr======>');
+          console.log(error, 'error======');
           dispatch({type: 'SET_ERROR', error: error.message});
         });
     } catch (error) {
