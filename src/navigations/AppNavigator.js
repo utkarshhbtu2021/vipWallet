@@ -1,19 +1,23 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import SplashScreen from '../screens/SplashScreen';
 import HomeScreen from '../screens/HomeScreen';
-import StackingScreen from '../screens/stackingScreen';
-import LoginScreen from '../screens/loginScreen';
-import SignupScreen from '../screens/signupScreen';
+import LoginScreen from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
 import DashboardScreen from '../screens/DashboardScreen';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import StackingScreen from '../screens/StackingScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
+// const Tab = createBottomTabNavigator();
+
+const DrawerNavigator = () => (
+  <Drawer.Navigator initialRouteName="HomeScreen">
+    <Drawer.Screen name="Home" component={HomeScreen} />
+  </Drawer.Navigator>
+);
 
 const AppNavigator = () => (
   <NavigationContainer>
@@ -23,8 +27,16 @@ const AppNavigator = () => (
         component={SplashScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="login" component={LoginScreen} />
-      <Stack.Screen name="signup" component={SignupScreen} />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Dashboard"
         component={DashboardScreen}
@@ -35,7 +47,11 @@ const AppNavigator = () => (
         component={StackingScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen
+        name="Home"
+        component={DrawerNavigator}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   </NavigationContainer>
 );
