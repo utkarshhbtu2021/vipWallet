@@ -11,9 +11,12 @@ import {
 import {LoginScreenImg} from '../asserts/images/image';
 import {initialState, reducer} from '../allReducers/loginReducer';
 import api from '../api';
+import Loader from '../components/loader';
+
 const LoginScreen = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [hidePassword, setHidePassword] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
     dispatch({type: 'SET_FIELD', field, value});
@@ -46,7 +49,7 @@ const LoginScreen = ({navigation}) => {
     if (!validateFields()) return;
     dispatch({type: 'SET_LOADING', loading: true});
     dispatch({type: 'SET_ERROR', error: ''});
-
+    setLoading(true);
     try {
       let request = {
         url: 'auth/login',
@@ -59,11 +62,15 @@ const LoginScreen = ({navigation}) => {
       api
         .post(request)
         .then(response => {
+          setLoading(false);
           console.log(response.data, 'res=======');
           dispatch({type: 'SET_SUCCESS'});
-          navigation.navigate('Dashboard')
+          setTimeout(() => {
+            navigation.navigate('Dashboard');
+          }, 2000);
         })
         .catch(error => {
+          setLoading(false);
           console.log(error, 'error======');
           dispatch({type: 'SET_ERROR', error: error.message});
         });
@@ -78,6 +85,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Loader loading={loading} />
       {/* <TouchableOpacity style={styles.backButton}>
         <Icon name="arrow-left" size={24} />
         <Text>Go TO Back</Text>
