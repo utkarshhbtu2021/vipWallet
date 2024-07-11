@@ -1,11 +1,23 @@
-import {StyleSheet, View, Text, SafeAreaView, TextInput} from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  TextInput,
+  Dimensions,
+} from 'react-native';
+import RBSheet from 'react-native-raw-bottom-sheet';
+
 import Header from '../../../components/header';
 import FullFooterButton from '../../../components/FullFooterButton';
+import ConfirmPopup from './confirmPopup';
 
-const Stackinginitate = ({navigation}) => {
+const {width, height} = Dimensions.get('window');
+
+const StackingInitiate = ({navigation}) => {
   const refRBSheet = useRef();
-  const [modalOpen, setModalOpen] = useState(false);
+
   const renderCircles = () => {
     return Array(5)
       .fill(null)
@@ -15,9 +27,10 @@ const Stackinginitate = ({navigation}) => {
         </View>
       ));
   };
+
   return (
-    <SafeAreaView>
-      <Header title={'Stacking'} navigation={navigation} />
+    <SafeAreaView style={styles.container}>
+      <Header title="Stacking" navigation={navigation} />
       <View style={styles.headerView}>
         <Text style={styles.heading}>Lock BTC</Text>
       </View>
@@ -27,50 +40,56 @@ const Stackinginitate = ({navigation}) => {
       </View>
       <View style={styles.circleContainer}>{renderCircles()}</View>
       <View style={styles.footerView}>
-        <Text
-          style={{
-            color: '#1D60E9',
-            fontFamily: 'Poppins',
-            fontSize: 15,
-            fontWeight: '500',
-            marginBottom: 17,
-          }}>
+        <Text style={styles.availableAmount}>
           Available amount o.oooooo BTC
         </Text>
       </View>
       <View style={styles.footerView}>
-        <Text
-          style={{
-            color: '#A2A2A7',
-            fontFamily: 'Poppins',
-            fontSize: 15,
-            fontWeight: '500',
-          }}>
-          Please enter the amount
-        </Text>
+        <Text style={styles.enterAmount}>Please enter the amount</Text>
       </View>
       <View style={styles.footerView}>
         <TextInput
-          height={40}
           underlineColorAndroid="transparent"
           placeholder="USD/MAX"
           placeholderTextColor="grey"
           numberOfLines={1}
         />
       </View>
-
       <FullFooterButton
-        BtnText={'Confirm Staking'}
-        onBtnPress={() => setModalOpen(true)}
+        BtnText="Confirm Staking"
+        onBtnPress={() => refRBSheet.current.open()}
         height={56}
       />
+      <RBSheet
+        ref={refRBSheet}
+        customModalProps={{
+          animationType: 'slide',
+          statusBarTranslucent: true,
+        }}
+        customStyles={styles.customStyle}>
+        <ConfirmPopup refRBSheet={refRBSheet} />
+      </RBSheet>
     </SafeAreaView>
   );
 };
 
-export default Stackinginitate;
+export default StackingInitiate;
 
 const styles = StyleSheet.create({
+  customStyle: {
+    container: {
+      height: height * 0.35,
+      width: width * 0.9,
+      marginVertical: 20,
+      marginHorizontal: 20,
+      borderRadius: 30,
+      marginBottom: height / 2.5,
+    },
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   headerView: {
     paddingTop: 42,
     flexDirection: 'row',
@@ -130,5 +149,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     marginLeft: 14,
     alignSelf: 'center',
+  },
+  availableAmount: {
+    color: '#1D60E9',
+    fontFamily: 'Poppins',
+    fontSize: 15,
+    fontWeight: '500',
+    marginBottom: 17,
+  },
+  enterAmount: {
+    color: '#A2A2A7',
+    fontFamily: 'Poppins',
+    fontSize: 15,
+    fontWeight: '500',
   },
 });
