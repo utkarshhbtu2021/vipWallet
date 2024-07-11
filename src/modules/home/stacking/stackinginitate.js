@@ -3,9 +3,9 @@ import {
   StyleSheet,
   View,
   Text,
-  SafeAreaView,
   TextInput,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
@@ -28,8 +28,32 @@ const StackingInitiate = ({navigation}) => {
       ));
   };
 
+  const InfoRow = ({label, value}) => (
+    <View style={styles.innerView}>
+      <Text
+        style={{
+          fontFamily: 'Poppins',
+          color: '#0066FF',
+          fontWeight: '500',
+          fontSize: 17,
+          paddingBottom: 8,
+        }}>
+        {label}
+      </Text>
+      <Text
+        style={{
+          fontFamily: 'Poppins',
+          color: '#000000',
+          fontWeight: '600',
+          fontSize: 17,
+        }}>
+        {value}
+      </Text>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <Header title="Stacking" navigation={navigation} />
       <View style={styles.headerView}>
         <Text style={styles.heading}>Lock BTC</Text>
@@ -55,6 +79,25 @@ const StackingInitiate = ({navigation}) => {
           numberOfLines={1}
         />
       </View>
+      <View style={styles.outerView}>
+        <InfoRow label="Locked Amount" value="0.0000000000 BTC" />
+        <InfoRow label="Redemption Period" value="2 Year" />
+        <InfoRow label="Est.TPY" value="3.75%" />
+        <InfoRow label="Reward WBTC (in 2 Years)" value="0.000000000" />
+      </View>
+      <View style={styles.terms}>
+        <Text style={styles.enterAmount}>I have read and i agree to</Text>
+        <Text
+          style={{
+            color: '#0066FF',
+            fontFamily: 'Poppins',
+            fontWeight: '600',
+            fontSize: 13,
+            paddingTop: 5,
+          }}>
+          VIP Staking Service Agremente
+        </Text>
+      </View>
       <FullFooterButton
         BtnText="Confirm Staking"
         onBtnPress={() => refRBSheet.current.open()}
@@ -69,13 +112,20 @@ const StackingInitiate = ({navigation}) => {
         customStyles={styles.customStyle}>
         <ConfirmPopup refRBSheet={refRBSheet} />
       </RBSheet>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
 export default StackingInitiate;
 
 const styles = StyleSheet.create({
+  outerView: {
+    marginHorizontal: 22.25,
+  },
+  innerView: {
+    flexDirection: 'column',
+    paddingVertical: 13,
+  },
   customStyle: {
     container: {
       height: height * 0.35,
@@ -135,6 +185,10 @@ const styles = StyleSheet.create({
   },
   footerView: {
     marginHorizontal: 22.25,
+  },
+  terms: {
+    marginHorizontal: 22.25,
+    marginBottom: 49,
   },
   duration: {
     fontSize: 28,
