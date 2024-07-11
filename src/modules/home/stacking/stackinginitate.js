@@ -53,7 +53,9 @@ const StackingInitiate = ({navigation}) => {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      contentContainerStyle={{paddingBottom: 30}}
+      style={styles.container}>
       <Header title="Stacking" navigation={navigation} />
       <View style={styles.headerView}>
         <Text style={styles.heading}>Lock BTC</Text>
