@@ -11,7 +11,7 @@ export default function Header({
     <View style={styles.headerView}>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation.pop()}
+          onPress={() => navigation.goBack()}
           style={styles.onpress}>
           <Text style={styles.backIcon}>{'<'}</Text>
         </TouchableOpacity>

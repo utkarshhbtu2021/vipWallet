@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   circleContainer: {
     flexDirection: 'row',
-    marginTop: 15,
+    marginVertical: 12,
     marginLeft: 13.61,
   },
   middleView: {

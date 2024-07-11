@@ -7,11 +7,14 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import {LoginScreenImg} from '../asserts/images/image';
 import {initialState, reducer} from '../allReducers/loginReducer';
 import api from '../api';
 import Loader from '../components/loader';
+import Header from '../components/header';
+import FullFooterButton from '../components/FullFooterButton';
 
 const LoginScreen = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -84,83 +87,77 @@ const LoginScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Loader loading={loading} />
-      {/* <TouchableOpacity style={styles.backButton}>
-        <Icon name="arrow-left" size={24} />
-        <Text>Go TO Back</Text>
-      </TouchableOpacity> */}
+    <SafeAreaView style={{flex: 1,backgroundColor:'#FFF'}}>
+      <Header title={'Add Wallet'}  navigation={navigation} />
+      <View style={styles.container}>
+        <Loader loading={loading} />
+        <Image source={LoginScreenImg?.profile} style={styles.profileImage} />
 
-      <Image source={LoginScreenImg?.profile} style={styles.profileImage} />
-      <Text style={styles.title}>Add Wallet</Text>
+        <Text style={styles.label}>Wallet Name</Text>
+        <View style={styles.inputContainer}>
+          <Image source={LoginScreenImg?.email} style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            value={state.walletName}
+            onChangeText={value => handleChange('walletName', value)}
+            placeholder="Wallet Name"
+          />
+        </View>
+        <Text style={styles.label}>Email Address</Text>
+        <View style={styles.inputContainer}>
+          <Image source={LoginScreenImg?.email} style={styles.icon} />
 
-      <Text style={styles.label}>Wallet Name</Text>
-      <View style={styles.inputContainer}>
-        <Image source={LoginScreenImg?.email} style={styles.icon} />
-        {/* <Icon name="account" size={20} style={styles.icon} /> */}
-        <TextInput
-          style={styles.input}
-          value={state.walletName}
-          onChangeText={value => handleChange('walletName', value)}
-          placeholder="Wallet Name"
-        />
-      </View>
-      <Text style={styles.label}>Email Address</Text>
-      <View style={styles.inputContainer}>
-        <Image source={LoginScreenImg?.email} style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            value={state.email}
+            onChangeText={value => handleChange('email', value)}
+            placeholder="Email Address"
+            keyboardType="email-address"
+          />
+        </View>
+        <Text style={styles.label}>Password</Text>
+        <View style={styles.inputContainer}>
+          <Image source={LoginScreenImg?.lock} style={styles.icon} />
 
-        <TextInput
-          style={styles.input}
-          value={state.email}
-          onChangeText={value => handleChange('email', value)}
-          placeholder="Email Address"
-          keyboardType="email-address"
-        />
-      </View>
-      <Text style={styles.label}>Password</Text>
-      <View style={styles.inputContainer}>
-        <Image source={LoginScreenImg?.lock} style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            value={state.password}
+            onChangeText={value => handleChange('password', value)}
+            placeholder="Password"
+            secureTextEntry={hidePassword}
+          />
+          <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+            <Image source={LoginScreenImg?.eye} style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+        {state.loading ? (
+          <ActivityIndicator />
+        ) : (
+          <FullFooterButton BtnText={'Login'}/>
+        )}
+        {state.error && <Text style={styles.error}>{state.error}</Text>}
+        {state.success && (
+          <Text style={styles.success}>User Logged in successfully!</Text>
+        )}
 
-        <TextInput
-          style={styles.input}
-          value={state.password}
-          onChangeText={value => handleChange('password', value)}
-          placeholder="Password"
-          secureTextEntry={hidePassword}
-        />
-        <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-          <Image source={LoginScreenImg?.eye} style={styles.icon} />
-        </TouchableOpacity>
-      </View>
-      {state.loading ? (
-        <ActivityIndicator />
-      ) : (
-        <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
-      )}
-      {state.error && <Text style={styles.error}>{state.error}</Text>}
-      {state.success && (
-        <Text style={styles.success}>User Logged in successfully!</Text>
-      )}
-
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <TouchableOpacity>
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Signup');
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}>
-          <Text style={styles.forgotPasswordText}>New User?</Text>
-        </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Signup');
+            }}>
+            <Text style={styles.forgotPasswordText}>New User?</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -168,10 +165,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: '#fff',
-    // backgroundColor: 'red',
   },
   backButton: {
     position: 'absolute',

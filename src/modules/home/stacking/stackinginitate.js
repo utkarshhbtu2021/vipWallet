@@ -1,11 +1,11 @@
-import {StyleSheet, View, Text} from 'react-native';
-import React, { useRef } from 'react';
-import RBSheet from 'react-native-raw-bottom-sheet';
+import {StyleSheet, View, Text, SafeAreaView, TextInput} from 'react-native';
+import React, {useRef, useState} from 'react';
 import Header from '../../../components/header';
 import FullFooterButton from '../../../components/FullFooterButton';
 
 const Stackinginitate = ({navigation}) => {
   const refRBSheet = useRef();
+  const [modalOpen, setModalOpen] = useState(false);
   const renderCircles = () => {
     return Array(5)
       .fill(null)
@@ -16,7 +16,7 @@ const Stackinginitate = ({navigation}) => {
       ));
   };
   return (
-    <View>
+    <SafeAreaView>
       <Header title={'Stacking'} navigation={navigation} />
       <View style={styles.headerView}>
         <Text style={styles.heading}>Lock BTC</Text>
@@ -26,8 +26,45 @@ const Stackinginitate = ({navigation}) => {
         <Text style={styles.year}>(Year)</Text>
       </View>
       <View style={styles.circleContainer}>{renderCircles()}</View>
-      <FullFooterButton BtnText={'Confirm Staking'} height={56} />
-    </View>
+      <View style={styles.footerView}>
+        <Text
+          style={{
+            color: '#1D60E9',
+            fontFamily: 'Poppins',
+            fontSize: 15,
+            fontWeight: '500',
+            marginBottom: 17,
+          }}>
+          Available amount o.oooooo BTC
+        </Text>
+      </View>
+      <View style={styles.footerView}>
+        <Text
+          style={{
+            color: '#A2A2A7',
+            fontFamily: 'Poppins',
+            fontSize: 15,
+            fontWeight: '500',
+          }}>
+          Please enter the amount
+        </Text>
+      </View>
+      <View style={styles.footerView}>
+        <TextInput
+          height={40}
+          underlineColorAndroid="transparent"
+          placeholder="USD/MAX"
+          placeholderTextColor="grey"
+          numberOfLines={1}
+        />
+      </View>
+
+      <FullFooterButton
+        BtnText={'Confirm Staking'}
+        onBtnPress={() => setModalOpen(true)}
+        height={56}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -68,13 +105,16 @@ const styles = StyleSheet.create({
   },
   circleContainer: {
     flexDirection: 'row',
-    marginTop: 15,
+    marginVertical: 15,
     marginLeft: 13.61,
     marginHorizontal: 22.25,
   },
   middleView: {
     marginTop: 27,
     flexDirection: 'row',
+    marginHorizontal: 22.25,
+  },
+  footerView: {
     marginHorizontal: 22.25,
   },
   duration: {

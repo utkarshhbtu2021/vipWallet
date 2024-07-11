@@ -5,11 +5,11 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
   Dimensions,
   ScrollView,
 } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import Header from '../components/header';
+import FullFooterButton from '../components/FullFooterButton';
 
 const {width, height} = Dimensions.get('window');
 
@@ -21,7 +21,6 @@ const SignupScreen = ({navigation}) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [country, setCountry] = useState('');
 
   const countries = [
     {label: 'United States', value: 'us'},
@@ -32,92 +31,89 @@ const SignupScreen = ({navigation}) => {
   ];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* <Image
-        source={{uri: 'https://via.placeholder.com/100'}}
-        style={styles.profileImage}
-      /> */}
-      <Text style={styles.title}>Create Wallet</Text>
-
-      <Text style={styles.label}>Create Wallet Name</Text>
-      <TextInput
-        style={styles.input}
-        value={walletName}
-        onChangeText={setWalletName}
-        placeholder="Wallet Name"
-        placeholderTextColor="#aaa"
-      />
-
-      <Text style={styles.label}>First Name</Text>
-      <TextInput
-        style={styles.input}
-        value={firstName}
-        onChangeText={setFirstName}
-        placeholder="First Name"
-        placeholderTextColor="#aaa"
-      />
-
-      <Text style={styles.label}>Last Name</Text>
-      <TextInput
-        style={styles.input}
-        value={lastName}
-        onChangeText={setLastName}
-        placeholder="Last Name"
-        placeholderTextColor="#aaa"
-      />
-
-      <Text style={styles.label}>Email Address</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email Address"
-        placeholderTextColor="#aaa"
-        keyboardType="email-address"
-      />
-
-      <Text style={styles.label}>Phone Number</Text>
-      <TextInput
-        style={styles.input}
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        placeholder="Phone Number"
-        placeholderTextColor="#aaa"
-        keyboardType="phone-pad"
-      />
-
-      <Text style={styles.label}>Password</Text>
-      <View style={styles.passwordContainer}>
+    <ScrollView style={{backgroundColor: '#FFF'}}>
+      <Header title={'Create Wallet'} navigation={navigation} />
+      <View style={styles.container}>
+        <Text style={styles.label}>Create Wallet Name</Text>
         <TextInput
           style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
+          value={walletName}
+          onChangeText={setWalletName}
+          placeholder="Wallet Name"
           placeholderTextColor="#aaa"
-          secureTextEntry
         />
-        <TouchableOpacity>
-          <Text style={styles.showPassword}>👁️</Text>
-        </TouchableOpacity>
-      </View>
 
-      <Text style={styles.label}>Confirm Password</Text>
-      <View style={styles.passwordContainer}>
+        <Text style={styles.label}>First Name</Text>
         <TextInput
           style={styles.input}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          placeholder="Confirm Password"
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholder="First Name"
           placeholderTextColor="#aaa"
-          secureTextEntry
         />
-        <TouchableOpacity>
-          <Text style={styles.showPassword}>👁️</Text>
-        </TouchableOpacity>
-      </View>
 
-      <Text style={styles.label}>Select Country</Text>
-      {/* <RNPickerSelect
+        <Text style={styles.label}>Last Name</Text>
+        <TextInput
+          style={styles.input}
+          value={lastName}
+          onChangeText={setLastName}
+          placeholder="Last Name"
+          placeholderTextColor="#aaa"
+        />
+
+        <Text style={styles.label}>Email Address</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email Address"
+          placeholderTextColor="#aaa"
+          keyboardType="email-address"
+        />
+
+        <Text style={styles.label}>Phone Number</Text>
+        <TextInput
+          style={styles.input}
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+          placeholder="Phone Number"
+          placeholderTextColor="#aaa"
+          keyboardType="phone-pad"
+        />
+
+        <Text style={styles.label}>Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Password"
+            placeholderTextColor="#aaa"
+            secureTextEntry
+          />
+          <TouchableOpacity>
+            <Text style={styles.showPassword}>👁️</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.label}>Confirm Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            placeholder="Confirm Password"
+            placeholderTextColor="#aaa"
+            secureTextEntry
+          />
+          <TouchableOpacity>
+            <Text style={styles.showPassword}>👁️</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.label}>Select Country</Text>
+
+        {/* <RNPickerSelect
         onValueChange={value => setCountry(value)}
         items={countries}
         placeholder={{label: 'Select a country...', value: null}}
@@ -128,16 +124,14 @@ const SignupScreen = ({navigation}) => {
         }}
         value={country}
       /> */}
-
-      <TouchableOpacity
-        style={styles.registerButton}
-        onPress={() => navigation.navigate('Dashboard')}>
-        <Text style={styles.registerButtonText}>Register</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={styles.cancelText}>Cancel</Text>
-      </TouchableOpacity>
+        <FullFooterButton
+          BtnText={'Register'}
+          onBtnPress={() => navigation.navigate('Dashboard')}
+        />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -200,7 +194,7 @@ const styles = StyleSheet.create({
   cancelText: {
     color: '#1E90FF',
     textAlign: 'center',
-    marginTop: height * 0.02,
+    marginTop: height * 0.01,
   },
 });
 
