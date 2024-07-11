@@ -133,7 +133,7 @@ const LoginScreen = ({navigation}) => {
         {state.loading ? (
           <ActivityIndicator />
         ) : (
-          <FullFooterButton BtnText={'Login'}/>
+          <FullFooterButton BtnText={'Login'} onBtnPress={handleSubmit}/>
         )}
         {state.error && <Text style={styles.error}>{state.error}</Text>}
         {state.success && (
