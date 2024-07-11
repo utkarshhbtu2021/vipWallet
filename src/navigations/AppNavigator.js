@@ -4,8 +4,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import SplashScreen from '../screens/SplashScreen';
 import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
+import LoginScreen from '../screens/loginScreen';
+import SignupScreen from '../screens/signupScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import StackingScreen from '../screens/StackingScreen';
 
