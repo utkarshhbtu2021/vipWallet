@@ -1,91 +1,88 @@
-// App.js
-
 import React from 'react';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Text, Button} from 'react-native';
 
-// Example Screens
-const SplashScreen = ({navigation}) => (
-  <View>
-    <Text>Splash Screen</Text>
-    <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
-  </View>
-);
+import SplashScreen from '../screens/SplashScreen';
+import LoginScreen from '../screens/loginScreen';
+import SignupScreen from '../screens/signupScreen';
+import HomeScreen from '../screens/HomeScreen';
+import DashboardScreen from '../screens/DashboardScreen';
+import StackingScreen from '../screens/StackingScreen';
+import {DashboardScreenImg} from '../asserts/images/image';
+import CustomDrawerContent from './customDrawerContent';
 
-const LoginScreen = ({navigation}) => (
-  <View>
-    <Text>Login Screen</Text>
-    <Button
-      title="Go to Signup"
-      onPress={() => navigation.navigate('Signup')}
-    />
-  </View>
-);
-
-const SignupScreen = ({navigation}) => (
-  <View>
-    <Text>Signup Screen</Text>
-    <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
-  </View>
-);
-
-const DashboardScreen = () => (
-  <View>
-    <Text>Dashboard Screen</Text>
-  </View>
-);
-
-const StackingScreen = () => (
-  <View>
-    <Text>Stacking Screen</Text>
-  </View>
-);
-
-const FiatCurrenciesScreen = () => (
-  <View>
-    <Text>Fiat Currencies Screen</Text>
-  </View>
-);
-
-const SettingsScreen = () => (
-  <View>
-    <Text>Settings Screen</Text>
-  </View>
-);
-
-const HomeScreen = () => (
-  <View>
-    <Text>Home Screen</Text>
-  </View>
-);
-
-// Create Navigators
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
-// Bottom Tab Navigator
 const BottomTabNavigator = () => (
   <Tab.Navigator>
-    <Tab.Screen name="Home" component={HomeScreen} />
-    <Tab.Screen name="Block Matching" component={StackingScreen} />
-    <Tab.Screen name="Staking" component={DashboardScreen} />
+    <Tab.Screen
+      name="Home"
+      component={DashboardScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({color, size}) => (
+          <Image source={DashboardScreenImg.HomeButton} style={styles.icon} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Block Matching"
+      component={DashboardScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({color, size}) => (
+          <Image
+            source={DashboardScreenImg.StackingButton}
+            style={styles.icon}
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Staking"
+      component={DashboardScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({color, size}) => (
+          <Image
+            source={DashboardScreenImg.StackingButton}
+            style={styles.icon}
+          />
+        ),
+      }}
+    />
   </Tab.Navigator>
 );
 
 // Drawer Navigator
 const DrawerNavigator = () => (
-  <Drawer.Navigator initialRouteName="Dashboard">
-    <Drawer.Screen name="Dashboard" component={BottomTabNavigator} />
-    <Drawer.Screen name="Fiat Currencies" component={FiatCurrenciesScreen} />
-    <Drawer.Screen name="Settings" component={SettingsScreen} />
-    {/* Add other screens here */}
+  <Drawer.Navigator
+    initialRouteName="Dashboard"
+    drawerContent={props => <CustomDrawerContent {...props} />}>
+    <Drawer.Screen
+      name="Dashboard"
+      component={BottomTabNavigator}
+      options={{
+        drawerIcon: ({color, size}) => (
+          <TouchableOpacity>
+            <Image
+              source={DashboardScreenImg?.DashBoardNav}
+              style={styles.image}
+            />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+    <Drawer.Screen name="Fiat Currencies" component={HomeScreen} />
+    <Drawer.Screen name="Settings" component={HomeScreen} />
   </Drawer.Navigator>
 );
-
 // Main App Navigator
 const AppNavigator = () => (
   <NavigationContainer>
@@ -110,8 +107,25 @@ const AppNavigator = () => (
         component={DrawerNavigator}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="Stacking"
+        component={StackingScreen}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   </NavigationContainer>
 );
+
+const styles = StyleSheet.create({
+  icon: {
+    width: 24,
+    height: 24,
+    marginBottom: 4,
+  },
+  image: {
+    height: 23,
+    width: 23,
+  },
+});
 
 export default AppNavigator;

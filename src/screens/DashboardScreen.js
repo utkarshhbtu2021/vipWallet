@@ -1,21 +1,13 @@
-import React, {useState, useCallback} from 'react';
-import {View, StyleSheet} from 'react-native';
-import HeaderNav from '../modules/home/header';
-import BottomNav from '../modules/home/bottomNav';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import DashBoard from '../modules/home/dashboard';
 import BlockMatching from '../modules/home/blockMatching';
 import Stacking from '../modules/home/stacking';
 
-const DashboardScreen = ({navigation}) => {
-  const [heading, setHeading] = useState('Dashboard');
-
-  const handleSetHeading = useCallback(newHeading => {
-    setHeading(newHeading);
-  }, []);
-
+const DashboardScreen = ({ navigation, route }) => {
   const renderContent = () => {
-    switch (heading) {
-      case 'Block Matching Affiliate':
+    switch (route.name) {
+      case 'Block Matching':
         return <BlockMatching />;
       case 'Staking':
         return <Stacking navigation={navigation} />;
@@ -25,13 +17,7 @@ const DashboardScreen = ({navigation}) => {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <HeaderNav heading={heading} />
-      {renderContent()}
-      <BottomNav setHeading={handleSetHeading} />
-    </View>
-  );
+  return <View style={styles.container}>{renderContent()}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -41,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(DashboardScreen);
+export default DashboardScreen;
