@@ -5,7 +5,7 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 
-import {DashboardScreenImg} from '../asserts/images/image';
+import {DashboardScreenImg, DrawerImages} from '../asserts/images/image';
 
 const CustomDrawerContent = props => {
   return (
@@ -13,10 +13,10 @@ const CustomDrawerContent = props => {
       <View style={styles.drawerContent}>
         <View style={styles.userInfoSection}>
           <View style={{flexDirection: 'row', marginTop: 15}}>
-            <Image source={DashboardScreenImg.bitCoin} style={styles.avatar} />
+            <Image source={DrawerImages.Avatar} style={styles.avatar} />
             <View style={{marginLeft: 15, flexDirection: 'column'}}>
-              <Text style={styles.title}>John Doe</Text>
-              <Text style={styles.caption}>johndoe@example.com</Text>
+              <Text style={styles.title}>Ashfak Sayem</Text>
+              <Text style={styles.caption}>ashfaksayem@gmail.com</Text>
             </View>
           </View>
         </View>
@@ -29,10 +29,11 @@ const CustomDrawerContent = props => {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
+    backgroundColor: '#0F1621',
   },
   userInfoSection: {
     paddingLeft: 20,
-    paddingBottom: 10,
+    paddingBottom: 32,
   },
   avatar: {
     width: 50,
@@ -40,13 +41,19 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   title: {
-    fontSize: 16,
-    marginTop: 3,
+    fontSize: 15,
+    fontWeight: '600',
+    fontFamily: 'Poppins',
+    marginTop: 8,
     fontWeight: 'bold',
+    color: '#FFFFFF',
   },
   caption: {
-    fontSize: 14,
-    lineHeight: 14,
+    marginTop: 3,
+    fontFamily: 'Poppins',
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#FFFFFF',
   },
 });
 
