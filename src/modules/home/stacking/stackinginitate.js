@@ -10,7 +10,7 @@ import {
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import Header from '../../../components/header';
-import FullFooterButton from '../../../components/FullFooterButton';
+import FullFooterButton from '../../../components/fullFooterButton';
 import ConfirmPopup from './confirmPopup';
 
 const {width, height} = Dimensions.get('window');

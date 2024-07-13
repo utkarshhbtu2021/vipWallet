@@ -5,6 +5,7 @@ export default function Header({
   title,
   navigation,
   onSelect,
+  addStyle,
   headerRight = () => null,
 }) {
   return (
@@ -15,7 +16,7 @@ export default function Header({
           style={styles.onpress}>
           <Text style={styles.backIcon}>{'<'}</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, addStyle]}>{title}</Text>
       </View>
       {headerRight()}
     </View>

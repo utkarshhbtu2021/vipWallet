@@ -14,7 +14,7 @@ import {initialState, reducer} from '../allReducers/loginReducer';
 import api from '../api';
 import Loader from '../components/loader';
 import Header from '../components/header';
-import FullFooterButton from '../components/FullFooterButton';
+import FullFooterButton from '../components/fullFooterButton';
 
 const LoginScreen = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -69,7 +69,7 @@ const LoginScreen = ({navigation}) => {
           console.log(response.data, 'res=======');
           dispatch({type: 'SET_SUCCESS'});
           setTimeout(() => {
-            navigation.navigate('Dashboard');
+            navigation.navigate('Home');
           }, 2000);
         })
         .catch(error => {

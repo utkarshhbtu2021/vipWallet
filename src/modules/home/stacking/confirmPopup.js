@@ -1,6 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import FullFooterButton from '../../../components/FullFooterButton';
+import FullFooterButton from '../../../components/fullFooterButton';
 
 const ConfirmPopup = ({refRBSheet}) => {
   return (

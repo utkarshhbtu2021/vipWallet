@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Header from '../components/header';
-import FullFooterButton from '../components/FullFooterButton';
+import FullFooterButton from '../components/fullFooterButton';
 
 const {width, height} = Dimensions.get('window');
 
@@ -126,7 +126,7 @@ const SignupScreen = ({navigation}) => {
       /> */}
         <FullFooterButton
           BtnText={'Register'}
-          onBtnPress={() => navigation.navigate('Dashboard')}
+          onBtnPress={() => navigation.navigate('Home')}
         />
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.cancelText}>Cancel</Text>
