@@ -9,7 +9,7 @@ import {DashboardScreenImg, DrawerImages} from '../asserts/images/image';
 
 const CustomDrawerContent = props => {
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView style={{backgroundColor: '#0F1621'}} {...props}>
       <View style={styles.drawerContent}>
         <View style={styles.userInfoSection}>
           <View style={{flexDirection: 'row', marginTop: 15}}>
@@ -29,7 +29,6 @@ const CustomDrawerContent = props => {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
-    backgroundColor: '#0F1621',
   },
   userInfoSection: {
     paddingLeft: 20,
