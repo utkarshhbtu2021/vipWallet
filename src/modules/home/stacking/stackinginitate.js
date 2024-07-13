@@ -6,6 +6,7 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
@@ -53,68 +54,70 @@ const StackingInitiate = ({navigation}) => {
   );
 
   return (
-    <ScrollView
-      contentContainerStyle={{paddingBottom: 30}}
-      style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header title="Stacking" navigation={navigation} />
-      <View style={styles.headerView}>
-        <Text style={styles.heading}>Lock BTC</Text>
-      </View>
-      <View style={styles.middleView}>
-        <Text style={styles.duration}>Duration</Text>
-        <Text style={styles.year}>(Year)</Text>
-      </View>
-      <View style={styles.circleContainer}>{renderCircles()}</View>
-      <View style={styles.footerView}>
-        <Text style={styles.availableAmount}>
-          Available amount o.oooooo BTC
-        </Text>
-      </View>
-      <View style={styles.footerView}>
-        <Text style={styles.enterAmount}>Please enter the amount</Text>
-      </View>
-      <View style={styles.footerView}>
-        <TextInput
-          underlineColorAndroid="transparent"
-          placeholder="USD/MAX"
-          placeholderTextColor="grey"
-          numberOfLines={1}
+      <ScrollView
+        contentContainerStyle={{paddingBottom: 30}}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.headerView}>
+          <Text style={styles.heading}>Lock BTC</Text>
+        </View>
+        <View style={styles.middleView}>
+          <Text style={styles.duration}>Duration</Text>
+          <Text style={styles.year}>(Year)</Text>
+        </View>
+        <View style={styles.circleContainer}>{renderCircles()}</View>
+        <View style={styles.footerView}>
+          <Text style={styles.availableAmount}>
+            Available amount o.oooooo BTC
+          </Text>
+        </View>
+        <View style={styles.footerView}>
+          <Text style={styles.enterAmount}>Please enter the amount</Text>
+        </View>
+        <View style={styles.footerView}>
+          <TextInput
+            underlineColorAndroid="transparent"
+            placeholder="USD/MAX"
+            placeholderTextColor="grey"
+            numberOfLines={1}
+          />
+        </View>
+        <View style={styles.outerView}>
+          <InfoRow label="Locked Amount" value="0.0000000000 BTC" />
+          <InfoRow label="Redemption Period" value="2 Year" />
+          <InfoRow label="Est.TPY" value="3.75%" />
+          <InfoRow label="Reward WBTC (in 2 Years)" value="0.000000000" />
+        </View>
+        <View style={styles.terms}>
+          <Text style={styles.enterAmount}>I have read and i agree to</Text>
+          <Text
+            style={{
+              color: '#0066FF',
+              fontFamily: 'Poppins',
+              fontWeight: '600',
+              fontSize: 13,
+              paddingTop: 5,
+            }}>
+            VIP Staking Service Agremente
+          </Text>
+        </View>
+        <FullFooterButton
+          BtnText="Confirm Staking"
+          onBtnPress={() => refRBSheet.current.open()}
+          height={56}
         />
-      </View>
-      <View style={styles.outerView}>
-        <InfoRow label="Locked Amount" value="0.0000000000 BTC" />
-        <InfoRow label="Redemption Period" value="2 Year" />
-        <InfoRow label="Est.TPY" value="3.75%" />
-        <InfoRow label="Reward WBTC (in 2 Years)" value="0.000000000" />
-      </View>
-      <View style={styles.terms}>
-        <Text style={styles.enterAmount}>I have read and i agree to</Text>
-        <Text
-          style={{
-            color: '#0066FF',
-            fontFamily: 'Poppins',
-            fontWeight: '600',
-            fontSize: 13,
-            paddingTop: 5,
-          }}>
-          VIP Staking Service Agremente
-        </Text>
-      </View>
-      <FullFooterButton
-        BtnText="Confirm Staking"
-        onBtnPress={() => refRBSheet.current.open()}
-        height={56}
-      />
-      <RBSheet
-        ref={refRBSheet}
-        customModalProps={{
-          animationType: 'slide',
-          statusBarTranslucent: true,
-        }}
-        customStyles={styles.customStyle}>
-        <ConfirmPopup refRBSheet={refRBSheet} />
-      </RBSheet>
-    </ScrollView>
+        <RBSheet
+          ref={refRBSheet}
+          customModalProps={{
+            animationType: 'slide',
+            statusBarTranslucent: true,
+          }}
+          customStyles={styles.customStyle}>
+          <ConfirmPopup refRBSheet={refRBSheet} />
+        </RBSheet>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
