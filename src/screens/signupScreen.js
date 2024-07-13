@@ -126,7 +126,7 @@ const SignupScreen = ({navigation}) => {
       /> */}
         <FullFooterButton
           BtnText={'Register'}
-          onBtnPress={() => navigation.navigate('Dashboard')}
+          onBtnPress={() => navigation.navigate('Home')}
         />
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.cancelText}>Cancel</Text>

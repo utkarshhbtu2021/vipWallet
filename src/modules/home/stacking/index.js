@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   headerView: {
-    marginTop: 42,
+    marginTop: 22,
     flexDirection: 'row',
     marginHorizontal: 22.25,
   },

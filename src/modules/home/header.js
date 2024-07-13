@@ -1,11 +1,11 @@
 import React from 'react';
 import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import { DashboardScreenImg } from '../../asserts/images/image';
+import {DashboardScreenImg} from '../../asserts/images/image';
 
-const HeaderNav = ({heading}) => {
+const HeaderNav = ({heading, toggleDrawer}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={toggleDrawer}>
         <Image source={DashboardScreenImg?.DashBoardNav} style={styles.image} />
       </TouchableOpacity>
       <Text style={styles.headText}>{heading}</Text>

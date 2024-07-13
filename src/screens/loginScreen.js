@@ -69,7 +69,7 @@ const LoginScreen = ({navigation}) => {
           console.log(response.data, 'res=======');
           dispatch({type: 'SET_SUCCESS'});
           setTimeout(() => {
-            navigation.navigate('Dashboard');
+            navigation.navigate('Home');
           }, 2000);
         })
         .catch(error => {
