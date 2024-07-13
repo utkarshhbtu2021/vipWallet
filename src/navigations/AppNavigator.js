@@ -14,6 +14,7 @@ import DashboardScreen from '../screens/DashboardScreen';
 import StackingScreen from '../screens/StackingScreen';
 import {DrawerImages, DashboardScreenImg} from '../asserts/images/image';
 import CustomDrawerContent from './CustomDrawerContent';
+import FietCurrencyScreen from '../screens/FietCurrency';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -81,8 +82,9 @@ const DrawerNavigator = () => (
     />
     <Drawer.Screen
       name="Fiat Currencies"
-      component={HomeScreen}
+      component={FietCurrencyScreen}
       options={{
+        headerShown:false,
         drawerIcon: () => (
           <Image source={DrawerImages.fiet} style={styles.image} />
         ),

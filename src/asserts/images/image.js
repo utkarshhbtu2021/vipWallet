@@ -39,3 +39,14 @@ export const DrawerImages = {
   terms: require('./Terms.png'),
   logout: require('./logout.png'),
 };
+
+export const CurrenciesIcon = {
+  America: require('./America.png'),
+  Australia: require('./Australia.png'),
+  English: require('./English.png'),
+  Franch: require('./Franch.png'),
+  Search: require('./search.png'),
+  Spanish: require('./Spanish.png'),
+  Vietnam: require('./Vietnam.png'),
+};
+
