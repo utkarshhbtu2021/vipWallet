@@ -6,10 +6,12 @@ import {
   SafeAreaView,
   FlatList,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import Header from '../components/header';
 import SearchBox from '../components/searchBox';
 import {CurrenciesIcon} from '../asserts/images/image';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const FiatCurrencyScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
@@ -25,8 +27,13 @@ const FiatCurrencyScreen = ({navigation}) => {
 
   const renderItem = ({item}) => (
     <View style={styles.itemContainer}>
-      <Image source={item.image} style={styles.image} />
-      <Text style={styles.itemText}>{item.name}</Text>
+      <View style={styles.imgView}>
+        <Image source={item.image} style={styles.image} />
+        <Text style={styles.itemText}>{item.name}</Text>
+      </View>
+      <TouchableOpacity style={{padding: 5}}>
+        <AntDesign name={'checkcircle'} size={26} style={{marginLeft: 10}} />
+      </TouchableOpacity>
     </View>
   );
 
@@ -55,6 +62,11 @@ const FiatCurrencyScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  imgView: {
+    flexDirection: 'row',
+    paddingTop: 22,
+    paddingVertical: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFF',
@@ -66,8 +78,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop:22,
-    paddingVertical: 10,
+    justifyContent: 'space-between',
   },
   image: {
     width: 40,
@@ -76,9 +87,10 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
-    fontFamily:'Poppins',
-    fontWeight:'500',
-    color:'#1E1E2D'
+    fontFamily: 'Poppins',
+    fontWeight: '500',
+    color: '#1E1E2D',
+    paddingTop: 10,
   },
 });
 

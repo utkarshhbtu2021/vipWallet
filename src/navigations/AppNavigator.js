@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, Text} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -15,6 +15,7 @@ import StackingScreen from '../screens/StackingScreen';
 import {DrawerImages, DashboardScreenImg} from '../asserts/images/image';
 import CustomDrawerContent from './CustomDrawerContent';
 import FietCurrencyScreen from '../screens/FietCurrency';
+import ProfileScreen from '../screens/profileScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -76,7 +77,7 @@ const DrawerNavigator = () => (
         drawerIcon: () => (
           <Image source={DrawerImages.dashIcon} style={styles.image} />
         ),
-        headerTitle: "My Dashboard", // Customize the header title
+        headerTitle: 'My Dashboard', // Customize the header title
         // headerRight: () => <Text style={{color: '#fff'}}>Right Item</Text>, // Customize the header right component
       }}
     />
@@ -84,7 +85,7 @@ const DrawerNavigator = () => (
       name="Fiat Currencies"
       component={FietCurrencyScreen}
       options={{
-        headerShown:false,
+        headerShown: false,
         drawerIcon: () => (
           <Image source={DrawerImages.fiet} style={styles.image} />
         ),
@@ -128,8 +129,9 @@ const DrawerNavigator = () => (
     />
     <Drawer.Screen
       name="Security"
-      component={HomeScreen}
+      component={ProfileScreen}
       options={{
+        headerShown: false,
         drawerIcon: () => (
           <Image source={DrawerImages.security} style={styles.image} />
         ),
@@ -171,7 +173,7 @@ const DrawerNavigator = () => (
         ),
       }}
     />
-    <Drawer.Screen
+     <Drawer.Screen
       name="Logout"
       component={HomeScreen}
       options={{
