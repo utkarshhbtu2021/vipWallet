@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, StyleSheet, Text} from 'react-native';
+import {Alert, Image, StyleSheet, Text} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -16,6 +16,7 @@ import {DrawerImages, DashboardScreenImg} from '../asserts/images/image';
 import CustomDrawerContent from './CustomDrawerContent';
 import FietCurrencyScreen from '../screens/FietCurrency';
 import ProfileScreen from '../screens/profileScreen';
+import api from '../api';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -63,136 +64,180 @@ const BottomTabNavigator = () => (
   </Tab.Navigator>
 );
 
-const DrawerNavigator = () => (
-  <Drawer.Navigator
-    initialRouteName="Dashboard"
-    drawerContent={props => <CustomDrawerContent {...props} />}
-    screenOptions={{
-      drawerLabelStyle: styles.drawerLabelStyle,
-    }}>
-    <Drawer.Screen
-      name="Dashboard"
-      component={BottomTabNavigator}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.dashIcon} style={styles.image} />
-        ),
-        headerTitle: 'My Dashboard', // Customize the header title
-        // headerRight: () => <Text style={{color: '#fff'}}>Right Item</Text>, // Customize the header right component
-      }}
-    />
-    <Drawer.Screen
-      name="Fiat Currencies"
-      component={FietCurrencyScreen}
-      options={{
-        headerShown: false,
-        drawerIcon: () => (
-          <Image source={DrawerImages.fiet} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Settings"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.setting} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Block Matching Dividend"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.dividend} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Staking Referral Dividends"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.refferal} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="My Referral Code"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.refCode} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Security"
-      component={ProfileScreen}
-      options={{
-        headerShown: false,
-        drawerIcon: () => (
-          <Image source={DrawerImages.security} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Currency Calculator"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.calculator} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Common Function For Vip"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.commanFunction} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Help And Support"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.shareApp} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Terms and Conditions"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.terms} style={styles.image} />
-        ),
-      }}
-    />
-     <Drawer.Screen
-      name="Logout"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.logout} style={styles.image} />
-        ),
-      }}
-    />
-    <Drawer.Screen
-      name="Share App"
-      component={HomeScreen}
-      options={{
-        drawerIcon: () => (
-          <Image source={DrawerImages.shareApp} style={styles.image} />
-        ),
-      }}
-    />
-  </Drawer.Navigator>
-);
+const DrawerNavigator = ({navigation}) => {
+  const handleLogout = async () => {
+    Alert.alert(
+      'Confirm Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          onPress: async () => {
+            try {
+              const response = await api.postAuth({
+                url: 'auth/logout',
+                data: {},
+              });
+              console.log('+', response);
+              if (response.status === 201) {
+                // Logout successful, navigate to login screen
+                navigation.navigate('Login');
+              } else {
+                // Handle errors
+                Alert.alert('Error', 'Failed to logout. Please try again.');
+              }
+            } catch (error) {
+              console.log('+', error);
+              // Handle network errors
+              Alert.alert('Error', 'Failed to logout. Please try again.');
+            }
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  };
+
+  return (
+    <Drawer.Navigator
+      initialRouteName="Dashboard"
+      drawerContent={props => <CustomDrawerContent {...props} />}
+      screenOptions={{
+        drawerLabelStyle: styles.drawerLabelStyle,
+      }}>
+      <Drawer.Screen
+        name="Dashboard"
+        component={BottomTabNavigator}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.dashIcon} style={styles.image} />
+          ),
+          headerTitle: 'My Dashboard',
+        }}
+      />
+      <Drawer.Screen
+        name="Fiat Currencies"
+        component={FietCurrencyScreen}
+        options={{
+          headerShown: false,
+          drawerIcon: () => (
+            <Image source={DrawerImages.fiet} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.setting} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Block Matching Dividend"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.dividend} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Staking Referral Dividends"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.refferal} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="My Referral Code"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.refCode} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Security"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+          drawerIcon: () => (
+            <Image source={DrawerImages.security} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Currency Calculator"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.calculator} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Common Function For Vip"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.commanFunction} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Help And Support"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.shareApp} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Terms and Conditions"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.terms} style={styles.image} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Logout"
+        component={DashboardScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.logout} style={styles.image} />
+          ),
+          // Call the handleLogout function when the item is pressed
+          drawerLabel: () => (
+            <Text onPress={handleLogout} style={styles.drawerLabel}>
+              Logout
+            </Text>
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Share App"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.shareApp} style={styles.image} />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
 
 const AppNavigator = () => (
   <NavigationContainer>
@@ -253,6 +298,9 @@ const styles = StyleSheet.create({
     marginRight: -15,
   },
   drawerLabelStyle: {
+    color: 'white',
+  },
+  drawerLabel: {
     color: 'white',
   },
 });
