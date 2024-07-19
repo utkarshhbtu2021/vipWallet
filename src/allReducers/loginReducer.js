@@ -34,6 +34,10 @@ export const reducer = (state, action) => {
         loading: false,
         error: action.error,
       };
+      case 'RESET':
+        return {
+          ...initialState,
+        };
     default:
       return state;
   }

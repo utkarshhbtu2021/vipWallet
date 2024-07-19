@@ -10,14 +10,15 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import {LoginScreenImg} from '../asserts/images/image';
 import Loader from '../components/loader';
 import Header from '../components/header';
+import {LoginScreenImg} from '../asserts/images/image';
 import FullFooterButton from '../components/fullFooterButton';
 
-import {initialState, reducer} from '../allReducers/loginReducer';
 import api from '../api';
 import {saveToken} from '../keyChain/keychain';
+import {initialState, reducer} from '../allReducers/loginReducer';
+import {useFocusEffect} from '@react-navigation/native';
 
 const LoginScreen = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -27,6 +28,12 @@ const LoginScreen = ({navigation}) => {
   const handleChange = (field, value) => {
     dispatch({type: 'SET_FIELD', field, value});
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch({type: 'RESET'});
+    }, []),
+  );
 
   const validateFields = () => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
