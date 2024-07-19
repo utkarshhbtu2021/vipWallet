@@ -16,7 +16,7 @@ import {LoginScreenImg} from '../asserts/images/image';
 import FullFooterButton from '../components/fullFooterButton';
 
 import api from '../api';
-import {saveToken} from '../keyChain/keychain';
+import {saveToken, saveUserInfo} from '../keyChain/keychain';
 import {initialState, reducer} from '../allReducers/loginReducer';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -80,6 +80,7 @@ const LoginScreen = ({navigation}) => {
 
       // Save the token
       await saveToken(response.data.result.token);
+      await saveUserInfo(response.data.result);
 
       dispatch({type: 'SET_SUCCESS'});
       setTimeout(() => {
