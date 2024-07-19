@@ -6,12 +6,16 @@ export default function FullFooterButton({
   onBtnPress,
   backgroundColor = '#FFF',
   height = 45,
+  btnColor='#0066FF',
 }) {
   return (
     <View style={{backgroundColor: backgroundColor}}>
       <View style={styles.buttonSection}>
         <TouchableOpacity
-          style={[styles.rightBtnContainer, {height: height}]}
+          style={[
+            styles.rightBtnContainer,
+            {height: height, backgroundColor: btnColor},
+          ]}
           onPress={() => onBtnPress()}>
           <Text style={styles.rightBtnText}>{BtnText}</Text>
         </TouchableOpacity>
@@ -29,12 +33,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   rightBtnContainer: {
-    backgroundColor: 'rgba(0, 102, 255, 1)',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#0D68FF',
     width: '100%',
   },
   rightBtnText: {

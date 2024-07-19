@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Alert, Image, StyleSheet, Text} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -16,7 +16,11 @@ import {DrawerImages, DashboardScreenImg} from '../asserts/images/image';
 import CustomDrawerContent from './CustomDrawerContent';
 import FietCurrencyScreen from '../screens/FietCurrency';
 import ProfileScreen from '../screens/profileScreen';
-import api from '../api';
+import {getToken} from '../keyChain/keychain';
+
+import config from '../config';
+import URL from '../api/url';
+import axios from 'axios';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -78,27 +82,29 @@ const DrawerNavigator = ({navigation}) => {
           text: 'Logout',
           onPress: async () => {
             try {
-              const response = await api.postAuth({
-                url: 'auth/logout',
-                data: {},
-              });
-              console.log('+', response);
+              const authToken = await getToken();
+              const response = await axios.post(
+                URL[config.env].BASE_URL + 'auth/logout',
+                '', // Body is empty
+                {
+                  headers: {
+                    Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
+                    accept: '*/*', // Match the curl request headers
+                  },
+                },
+              );
               if (response.status === 201) {
-                // Logout successful, navigate to login screen
                 navigation.navigate('Login');
               } else {
-                // Handle errors
                 Alert.alert('Error', 'Failed to logout. Please try again.');
               }
             } catch (error) {
-              console.log('+', error);
-              // Handle network errors
               Alert.alert('Error', 'Failed to logout. Please try again.');
             }
           },
         },
       ],
-      { cancelable: false },
+      {cancelable: false},
     );
   };
 

@@ -9,12 +9,15 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from 'react-native';
+
 import {LoginScreenImg} from '../asserts/images/image';
-import {initialState, reducer} from '../allReducers/loginReducer';
-import api from '../api';
 import Loader from '../components/loader';
 import Header from '../components/header';
 import FullFooterButton from '../components/fullFooterButton';
+
+import {initialState, reducer} from '../allReducers/loginReducer';
+import api from '../api';
+import {saveToken} from '../keyChain/keychain';
 
 const LoginScreen = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -50,11 +53,13 @@ const LoginScreen = ({navigation}) => {
 
   const handleSubmit = async () => {
     if (!validateFields()) return;
+
     dispatch({type: 'SET_LOADING', loading: true});
     dispatch({type: 'SET_ERROR', error: ''});
     setLoading(true);
+
     try {
-      let request = {
+      const request = {
         url: 'auth/login',
         data: {
           walletName: state.walletName,
@@ -62,33 +67,29 @@ const LoginScreen = ({navigation}) => {
           password: state.password,
         },
       };
-      api
-        .post(request)
-        .then(response => {
-          setLoading(false);
-          console.log(response.data, 'res=======');
-          dispatch({type: 'SET_SUCCESS'});
-          setTimeout(() => {
-            navigation.navigate('Home');
-          }, 2000);
-        })
-        .catch(error => {
-          setLoading(false);
-          console.log(error, 'error======');
-          dispatch({type: 'SET_ERROR', error: error.message});
-        });
+
+      const response = await api.post(request);
+      setLoading(false);
+
+      // Save the token
+      await saveToken(response.data.result.token);
+
+      dispatch({type: 'SET_SUCCESS'});
+      setTimeout(() => {
+        navigation.navigate('Home');
+      }, 2000);
     } catch (error) {
+      setLoading(false);
       dispatch({type: 'SET_ERROR', error: error.message});
     } finally {
       dispatch({type: 'SET_LOADING', loading: false});
       dispatch({type: 'SET_ERROR', error: ''});
     }
-    // }
   };
 
   return (
-    <SafeAreaView style={{flex: 1,backgroundColor:'#FFF'}}>
-      <Header title={'Add Wallet'}  navigation={navigation} />
+    <SafeAreaView style={{flex: 1, backgroundColor: '#FFF'}}>
+      <Header title={'Add Wallet'} navigation={navigation} />
       <View style={styles.container}>
         <Loader loading={loading} />
         <Image source={LoginScreenImg?.profile} style={styles.profileImage} />
@@ -133,7 +134,7 @@ const LoginScreen = ({navigation}) => {
         {state.loading ? (
           <ActivityIndicator />
         ) : (
-          <FullFooterButton BtnText={'Login'} onBtnPress={handleSubmit}/>
+          <FullFooterButton BtnText={'Login'} onBtnPress={handleSubmit} />
         )}
         {state.error && <Text style={styles.error}>{state.error}</Text>}
         {state.success && (
