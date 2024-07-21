@@ -8,6 +8,9 @@ export const LoginScreenImg = {
   email: require('./email.png'),
   lock: require('./lock.png'),
   arrow: require('./arrow.png'),
+  regUser: require('./regUser.png'),
+  countryIcon: require('./contryIcon.png'),
+
 };
 
 export const SignUpScreenImg = {
