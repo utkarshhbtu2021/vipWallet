@@ -1,5 +1,6 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
+import {LoginScreenImg} from '../asserts/images/image';
 
 export default function Header({
   title,
@@ -14,7 +15,7 @@ export default function Header({
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.onpress}>
-          <Text style={styles.backIcon}>{'<'}</Text>
+          <Image source={LoginScreenImg.arrow} style={styles.arrowStyle} />
         </TouchableOpacity>
         <Text style={[styles.title, addStyle]}>{title}</Text>
       </View>
@@ -24,6 +25,12 @@ export default function Header({
 }
 
 const styles = StyleSheet.create({
+  arrowStyle: {
+    height: 20,
+    width: 20,
+    alignSelf: 'center',
+    marginTop: 8,
+  },
   title: {
     fontFamily: 'Poppins',
     fontSize: 16,

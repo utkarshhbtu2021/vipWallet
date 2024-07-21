@@ -7,6 +7,7 @@ export const LoginScreenImg = {
   eye: require('./eye.png'),
   email: require('./email.png'),
   lock: require('./lock.png'),
+  arrow: require('./arrow.png'),
 };
 
 export const SignUpScreenImg = {
@@ -49,4 +50,3 @@ export const CurrenciesIcon = {
   Spanish: require('./Spanish.png'),
   Vietnam: require('./Vietnam.png'),
 };
-
