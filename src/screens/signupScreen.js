@@ -9,231 +9,190 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
-  Button,
-  Alert,
 } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import Header from '../components/header';
-import FullFooterButton from '../components/fullFooterButton';
-import {LoginScreenImg} from '../asserts/images/image';
-import {viewMessage} from '../utils/toastUtils';
-import {colors} from '../components/colors';
 import Toast from 'react-native-toast-message';
-import axios from 'axios';
+import PhoneInput from 'react-native-phone-number-input';
+import CountryPicker from 'react-native-country-picker-modal';
+
 import config from '../config';
 import URL from '../api/url';
+import Header from '../components/header';
 import Loader from '../components/loader';
-import PhoneInput from 'react-native-phone-number-input';
+import FullFooterButton from '../components/fullFooterButton';
+import {LoginScreenImg} from '../asserts/images/image';
 
 const {width, height} = Dimensions.get('window');
 
 const SignupScreen = ({navigation}) => {
-  const toastRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const phoneInput = useRef(null);
   const [walletName, setWalletName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true);
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [loading, setLoading] = useState(false);
-  const phoneInput = useRef(null);
-  const [formattedValue, setFormattedValue] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
-  const countries = [
-    {label: 'United States', value: 'us'},
-    {label: 'Canada', value: 'ca'},
-    {label: 'United Kingdom', value: 'uk'},
-    {label: 'Australia', value: 'au'},
-  ];
+  const onSelect = country => {
+    setCountryCode(country.cca2);
+    setSelectedCountry(country.name);
+  };
 
-  const showToast = () => {
+  const showToast = (type, text1, position = 'bottom') => {
     Toast.show({
-      type: 'success', // options: 'success', 'error', 'info'
-      text1: 'Hello',
-      text2: 'This is some something 👋',
+      type,
+      text1,
+      position,
+      visibilityTime: 3000,
+      autoHide: true,
+      topOffset: 30,
+      bottomOffset: 100,
+      props: {
+        backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
+        textColor: '#000',
+      },
     });
   };
 
-  const onSave = async () => {
-    setLoading(true);
-
-    // Define the payload
-    const payload = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-      countryCode: '+91',
-      phone: phoneNumber,
-      country: selectedCountry,
-      affiliateCode: '001',
-      affiliateName: 'abc',
-      walletName: walletName,
-      block: '002',
-    };
-
-    // Basic validation (this can be expanded as needed)
+  const validateInputs = () => {
     if (!email || !password || password !== confirmPassword) {
-      Alert('Please check your input fields.');
-      setLoading(false);
-      return;
+      showToast('error', 'Please check your input fields.', 'bottom');
+      return false;
     }
+    return true;
+  };
 
+  const onSave = async () => {
+    if (!validateInputs()) return;
+    const createPayload = {
+      walletName,
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      countryCode,
+      country: selectedCountry,
+      phone: phoneNumber,
+      affiliateCode: '1',
+      affiliateName: 'a',
+      block: '1',
+    };
+    setLoading(true);
     try {
-      // Make the API request to save the user data
       const response = await fetch(`${URL[config.env].BASE_URL}auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(createPayload),
       });
-
       if (!response.ok) {
-        Alert('Please Enter Required Information');
+        showToast('error', 'Please Enter Required Information', 'bottom');
         throw new Error('Network response was not ok');
       }
 
-      // Handle success
       const result = await response.json();
-      Alert('User Register Successful');
-      console.log('Success:', result);
+      showToast('success', 'User Register Successful', 'bottom');
+      setTimeout(() => navigation.navigate('Login'), 2000);
     } catch (error) {
-      // Handle error
-      console.error('Error:', error);
-      Alert('Registration failed. Please try again later.');
+      showToast(
+        'error',
+        'Registration failed. Please try again later.',
+        'bottom',
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: '#FFF'}}>
+    <SafeAreaView style={styles.safeArea}>
       <Loader loading={loading} />
+      <Toast ref={ref => Toast.setRef(ref)} />
       <Header
         title="Create Wallet"
         navigation={navigation}
         addStyle={styles.titleStyle}
       />
-      <Toast ref={ref => Toast.setRef(ref)} />
-      <ScrollView contentContainerStyle={{paddingBottom: 150}}>
-        <View style={{marginTop: 25}}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.imageContainer}>
           <Image source={LoginScreenImg?.profile} style={styles.profileImage} />
         </View>
         <View style={styles.container}>
-          <Text style={styles.label}>Create Wallet Name</Text>
-          <View style={styles.inputContainer}>
-            <Image source={LoginScreenImg?.email} style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              value={walletName}
-              onChangeText={setWalletName}
-              placeholder="Wallet Name"
-            />
-          </View>
-
-          <Text style={styles.label}>First Name</Text>
-          <View style={styles.inputContainer}>
-            <Image source={LoginScreenImg?.regUser} style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              value={firstName}
-              onChangeText={setFirstName}
-              placeholder="First Name"
-            />
-          </View>
-
-          <Text style={styles.label}>Last Name</Text>
-          <View style={styles.inputContainer}>
-            <Image source={LoginScreenImg?.regUser} style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              value={lastName}
-              onChangeText={setLastName}
-              placeholder="Last Name"
-            />
-          </View>
-
-          <Text style={styles.label}>Email Address</Text>
-          <View style={styles.inputContainer}>
-            <Image source={LoginScreenImg?.email} style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              placeholder="Email Address"
-              keyboardType="email-address"
-            />
-          </View>
-
+          <TextInputField
+            label="Create Wallet Name"
+            value={walletName}
+            onChangeText={setWalletName}
+            placeholder="Wallet Name"
+          />
+          <TextInputField
+            label="First Name"
+            value={firstName}
+            onChangeText={setFirstName}
+            placeholder="First Name"
+          />
+          <TextInputField
+            label="Last Name"
+            value={lastName}
+            onChangeText={setLastName}
+            placeholder="Last Name"
+          />
+          <TextInputField
+            label="Email Address"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Email Address"
+            keyboardType="email-address"
+          />
           <Text style={styles.label}>Phone Number</Text>
           <PhoneInput
             ref={phoneInput}
             defaultValue={phoneNumber}
-            defaultCode="DM"
+            defaultCode={countryCode}
             layout="first"
-            onChangeText={text => {
-              setPhoneNumber(text);
-            }}
-            containerStyle={{
-              width: '100%',
-              height: 75,
-              backgroundColor: '#FFF',
-            }}
-            textContainerStyle={{backgroundColor: '#FFF'}}
+            onChangeText={setPhoneNumber}
+            containerStyle={styles.phoneInputContainer}
+            textContainerStyle={styles.phoneInputTextContainer}
           />
-
-          <Text style={styles.label}>Password</Text>
-          <View style={styles.inputContainer}>
-            <Image source={LoginScreenImg?.lock} style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Password"
-              secureTextEntry={hidePassword}
-            />
-            <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-              <Image source={LoginScreenImg?.eye} style={styles.icon} />
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.label}>Confirm Password</Text>
-          <View style={styles.inputContainer}>
-            <Image source={LoginScreenImg?.lock} style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              placeholder="Confirm Password"
-              secureTextEntry={hidePassword}
-            />
-            <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-              <Image source={LoginScreenImg?.eye} style={styles.icon} />
-            </TouchableOpacity>
-          </View>
-
+          <PasswordInput
+            label="Password"
+            value={password}
+            onChangeText={setPassword}
+            hidePassword={hidePassword}
+            onHidePasswordToggle={() => setHidePassword(!hidePassword)}
+          />
+          <PasswordInput
+            label="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            hidePassword={hidePassword}
+            onHidePasswordToggle={() => setHidePassword(!hidePassword)}
+          />
           <Text style={styles.label}>Select Country</Text>
-          <View style={styles.inputContainer}>
-            <Image source={LoginScreenImg?.countryIcon} style={styles.icon} />
-            <TextInput
-              style={styles.input}
-              value={selectedCountry}
-              onChangeText={setSelectedCountry}
-              placeholder="Select a country"
+          <View style={{flexDirection: 'row', marginBottom: 40}}>
+            <CountryPicker
+              countryCode={countryCode}
+              withCallingCode
+              onSelect={onSelect}
+              containerButtonStyle={styles.countryPickerButton}
             />
+            {selectedCountry && (
+              <Text style={[styles.input, {marginTop: 4}]}>
+                {selectedCountry}
+              </Text>
+            )}
           </View>
 
           <FullFooterButton
             height={56}
             BtnText="Register"
-            onBtnPress={() => onSave()}
+            onBtnPress={onSave}
           />
-
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={styles.cancelText}>Cancel</Text>
           </TouchableOpacity>
@@ -243,16 +202,67 @@ const SignupScreen = ({navigation}) => {
   );
 };
 
+const TextInputField = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  keyboardType = 'default',
+}) => (
+  <>
+    <Text style={styles.label}>{label}</Text>
+    <View style={styles.inputContainer}>
+      <Image source={LoginScreenImg?.email} style={styles.icon} />
+      <TextInput
+        style={styles.input}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        keyboardType={keyboardType}
+      />
+    </View>
+  </>
+);
+
+const PasswordInput = ({
+  label,
+  value,
+  onChangeText,
+  hidePassword,
+  onHidePasswordToggle,
+}) => (
+  <>
+    <Text style={styles.label}>{label}</Text>
+    <View style={styles.inputContainer}>
+      <Image source={LoginScreenImg?.lock} style={styles.icon} />
+      <TextInput
+        style={styles.input}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={label}
+        secureTextEntry={hidePassword}
+      />
+      <TouchableOpacity onPress={onHidePasswordToggle}>
+        <Image source={LoginScreenImg?.eye} style={styles.icon} />
+      </TouchableOpacity>
+    </View>
+  </>
+);
+
 const styles = StyleSheet.create({
-  titleStyle: {
-    color: '#1E1E2D',
-    fontWeight: '600',
-    marginLeft: 85,
+  safeArea: {
+    backgroundColor: '#FFF',
+  },
+  scrollContainer: {
+    paddingBottom: 150,
+  },
+  imageContainer: {
+    marginTop: 25,
   },
   profileImage: {
     width: width * 0.25,
     height: width * 0.25,
-    borderRadius: (width * 0.25) / 2,
+    borderRadius: width * 0.125,
     alignSelf: 'center',
     marginBottom: height * 0.03,
   },
@@ -268,7 +278,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   label: {
-    alignSelf: 'flex-start',
     marginBottom: 5,
     fontSize: 14,
     fontWeight: '500',
@@ -289,30 +298,27 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 4,
   },
-  passwordContainer: {
+  phoneInputContainer: {
     width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
+    height: 75,
+    backgroundColor: '#FFF',
   },
-  showPassword: {
-    marginLeft: -width * 0.1,
+  phoneInputTextContainer: {
+    backgroundColor: '#FFF',
   },
-  registerButton: {
-    backgroundColor: '#1E90FF',
-    paddingVertical: height * 0.02,
-    paddingHorizontal: width * 0.2,
-    borderRadius: 5,
-    marginTop: height * 0.02,
-    alignSelf: 'center',
-  },
-  registerButtonText: {
-    color: '#fff',
-    fontSize: width * 0.045,
+  countryPickerButton: {
+    padding: 5,
+    // borderWidth: 1,
   },
   cancelText: {
     color: '#1E90FF',
     textAlign: 'center',
     marginTop: height * 0.01,
+  },
+  titleStyle: {
+    color: '#1E1E2D',
+    fontWeight: '600',
+    marginLeft: 85,
   },
 });
 
