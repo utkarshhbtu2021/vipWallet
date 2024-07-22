@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Image, StyleSheet, Text} from 'react-native';
+import {Alert, Image, Linking, Share, StyleSheet, Text} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -71,6 +71,30 @@ const BottomTabNavigator = () => (
 );
 
 const DrawerNavigator = ({navigation}) => {
+  const onShare = async () => {
+    try {
+      const {action, activityType} = await Share.share({
+        message: 'https://proctur.com', // Replace with your content
+        // You can also include title or URL if needed
+      });
+
+      switch (action) {
+        case Share.sharedAction:
+          if (activityType) {
+            console.log('Shared with activity type:', activityType);
+          } else {
+            console.log('Content shared successfully');
+          }
+          break;
+        case Share.dismissedAction:
+          console.log('Share action dismissed');
+          break;
+        default:
+          console.log('Unhandled action:', action);
+      }
+    } catch (error) {}
+  };
+
   const handleLogout = async () => {
     Alert.alert(
       'Confirm Logout',
@@ -240,6 +264,11 @@ const DrawerNavigator = ({navigation}) => {
         options={{
           drawerIcon: () => (
             <Image source={DrawerImages.shareApp} style={styles.image} />
+          ),
+          drawerLabel: () => (
+            <Text onPress={onShare} style={styles.drawerLabel}>
+              Share App
+            </Text>
           ),
         }}
       />

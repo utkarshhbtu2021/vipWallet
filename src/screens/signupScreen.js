@@ -174,11 +174,12 @@ const SignupScreen = ({navigation}) => {
             onHidePasswordToggle={() => setHidePassword(!hidePassword)}
           />
           <Text style={styles.label}>Select Country</Text>
-          <View style={{flexDirection: 'row', marginBottom: 40}}>
+          <View style={styles.countryPicker}>
             <CountryPicker
               countryCode={countryCode}
               withCallingCode
               onSelect={onSelect}
+              withFilter={true} // Enables search functionality
               containerButtonStyle={styles.countryPickerButton}
             />
             {selectedCountry && (
@@ -250,6 +251,10 @@ const PasswordInput = ({
 );
 
 const styles = StyleSheet.create({
+  countryPicker: {
+    flexDirection: 'row',
+    marginBottom: 40,
+  },
   safeArea: {
     backgroundColor: '#FFF',
   },
