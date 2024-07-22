@@ -84,7 +84,7 @@ const LoginScreen = ({navigation}) => {
 
       dispatch({type: 'SET_SUCCESS'});
       setTimeout(() => {
-        navigation.navigate('Home');
+        navigation.navigate('VerificationScreen');
       }, 2000);
     } catch (error) {
       setLoading(false);

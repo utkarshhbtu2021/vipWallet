@@ -16,6 +16,8 @@ import {DrawerImages, DashboardScreenImg} from '../asserts/images/image';
 import CustomDrawerContent from './CustomDrawerContent';
 import FietCurrencyScreen from '../screens/FietCurrency';
 import ProfileScreen from '../screens/profileScreen';
+import VerificationScreen from '../screens/verificationScreen';
+
 import {getToken} from '../keyChain/keychain';
 
 import config from '../config';
@@ -261,6 +263,11 @@ const AppNavigator = () => (
       <Stack.Screen
         name="Signup"
         component={SignupScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="VerificationScreen"
+        component={VerificationScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen

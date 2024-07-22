@@ -3,6 +3,7 @@ export const SplashScreenImg = {
 };
 
 export const LoginScreenImg = {
+  verification: require('./verification.png'),
   profile: require('./profile.png'),
   eye: require('./eye.png'),
   email: require('./email.png'),
