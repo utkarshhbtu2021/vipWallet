@@ -13,7 +13,7 @@ import HomeScreen from '../screens/HomeScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import StackingScreen from '../screens/StackingScreen';
 import {DrawerImages, DashboardScreenImg} from '../asserts/images/image';
-import CustomDrawerContent from './CustomDrawerContent';
+import CustomDrawerContent from './customDrawerContent';
 import FietCurrencyScreen from '../screens/FietCurrency';
 import ProfileScreen from '../screens/profileScreen';
 import VerificationScreen from '../screens/verificationScreen';
