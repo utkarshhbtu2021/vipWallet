@@ -1,9 +1,15 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, SafeAreaView} from 'react-native';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
+
 import Header from '../components/header';
 import PasswordInput from '../components/passwordInput';
 import FullFooterButton from '../components/fullFooterButton';
-import {toast} from '../components/toast';
+import Loader from '../components/loader';
+import {getToken} from '../keyChain/keychain';
+import config from '../config';
+import URL from '../api/url';
 
 const ProfileScreen = ({navigation}) => {
   const initialErrorState = {
@@ -11,47 +17,131 @@ const ProfileScreen = ({navigation}) => {
     newPassword: false,
     confirmPassword: false,
   };
-
-  const toastRef = useRef('bottom');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(initialErrorState);
+  const [loading, setLoading] = useState(false);
+
+  const showToast = (type, text1, position = 'bottom') => {
+    Toast.show({
+      type,
+      text1,
+      position,
+      visibilityTime: 3000,
+      autoHide: true,
+      topOffset: 30,
+      bottomOffset: 100,
+      props: {
+        backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
+        textColor: '#000',
+      },
+    });
+  };
 
   const handleChangePassword = async () => {
-    const valid = await validatePassword(newPassword, confirmPassword);
+    const valid = await validatePassword(
+      newPassword,
+      confirmPassword,
+      currentPassword,
+    );
     if (valid) {
       onPasswordChange(newPassword, confirmPassword);
     }
   };
 
   const onPasswordChange = async (newPassword, confirmPassword) => {
+    setLoading(true);
+  
+    const showErrorToast = (message) => {
+      showToast('error', message, 'top');
+    };
+  
+    const showSuccessToast = (message) => {
+      showToast('success', message, 'top');
+    };
+  
     try {
-      console.log('Password changed successfully');
-      message('Password changed successfully', 'success');
-      // Add actual password change logic here
+      const payload = {
+        password: newPassword,
+        confirmPassword: confirmPassword,
+      };
+  
+      const authToken = await getToken();
+      const response = await axios.put(
+        `${URL[config.env].BASE_URL}auth/change-password`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            Accept: '*/*',
+          },
+        }
+      );
+  
+      setLoading(false);
+  
+      if (response.status === 201) {
+        showSuccessToast('Password changed successfully');
+        setConfirmPassword('');
+        setCurrentPassword('');
+        setNewPassword('');
+      } else if (response.status === 404) {
+        showErrorToast('User not found. Please check the verification code.');
+      } else if (response.status === 500) {
+        showErrorToast('Server error. Please try again later.');
+      } else {
+        showErrorToast('Failed to verify the code. Please try again.');
+      }
     } catch (error) {
-      console.error(error);
-      message('Failed to change password', 'error');
+      setLoading(false);
+  
+      if (error.response) {
+        const { status } = error.response;
+        if (status === 404) {
+          showErrorToast('User not found. Please check the verification code.');
+        } else if (status === 500) {
+          showErrorToast('Server error. Please try again later.');
+        } else {
+          showErrorToast('Failed to verify the code. Please try again.');
+        }
+      } else {
+        showErrorToast('Network error. Please check your connection.');
+      }
+      console.error('Verification failed:', error);
     }
   };
+  
 
-  const validatePassword = async (newPass, confirmPass) => {
-    if (newPass.length < 8) {
-      message('New Password must be at least 8 characters.');
-      setError({...initialErrorState, newPassword: true});
+  const validatePassword = async (newPass, confirmPass, currPass) => {
+    const MIN_PASSWORD_LENGTH = 8;
+    let errorState = {...initialErrorState};
+
+    if (currPass.length < MIN_PASSWORD_LENGTH) {
+      showToast('error', 'Wrong Current Password', 'top');
+      errorState = {...errorState, newPassword: true};
+      setError(errorState);
       return false;
-    } else if (newPass !== confirmPass) {
-      message('New password and confirm password do not match.');
-      setError({...initialErrorState, confirmPassword: true});
+    }
+
+    if (newPass.length < MIN_PASSWORD_LENGTH) {
+      showToast('error', 'New password must be at least 8 characters.', 'top');
+      errorState = {...errorState, newPassword: true};
+      setError(errorState);
+      return false;
+    }
+
+    if (newPass !== confirmPass) {
+      showToast(
+        'error',
+        'New password and confirm password do not match.',
+        'top',
+      );
+      errorState = {...errorState, confirmPassword: true};
+      setError(errorState);
       return false;
     }
     return true;
-  };
-
-  const message = (textMessage, status) => {
-    const color = status === 'success' ? '#4CAF50' : '#FF0000';
-    toast.bottom(toastRef, textMessage, 3000, color);
   };
 
   const handleCancel = () => {
@@ -60,11 +150,13 @@ const ProfileScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Loader loading={loading} />
       <Header
         addStyle={styles.header}
         navigation={navigation}
         title={'Update Profile'}
       />
+      <Toast ref={ref => Toast.setRef(ref)} />
       <View style={styles.formContainer}>
         <PasswordInput
           value={currentPassword}
@@ -81,7 +173,6 @@ const ProfileScreen = ({navigation}) => {
           placeholder={'Enter new password'}
           isInvalid={error.newPassword}
           color={'#A2A2A7'}
-          // style={styles.passwordInput}
         />
         <PasswordInput
           value={confirmPassword}
@@ -90,18 +181,23 @@ const ProfileScreen = ({navigation}) => {
           placeholder={'Confirm new password'}
           isInvalid={error.confirmPassword}
           color={'#A2A2A7'}
-          // style={styles.passwordInput}
         />
       </View>
-      <FullFooterButton
-        BtnText={'Change Password'}
-        onBtnPress={handleChangePassword}
-      />
-      <FullFooterButton
-        BtnText={'Cancel'}
-        btnColor={'#01C0EF'}
-        onBtnPress={handleCancel}
-      />
+      <View style={{marginTop: 39}}>
+        <FullFooterButton
+          height={56}
+          BtnText={'Change Password'}
+          onBtnPress={handleChangePassword}
+        />
+      </View>
+      <View style={{marginTop: 20}}>
+        <FullFooterButton
+          height={56}
+          BtnText={'Cancel'}
+          btnColor={'#01C0EF'}
+          onBtnPress={handleCancel}
+        />
+      </View>
     </SafeAreaView>
   );
 };

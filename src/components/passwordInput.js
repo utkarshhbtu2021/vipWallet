@@ -15,7 +15,12 @@ const PasswordInput = ({
   const [show, setShow] = useState(false);
   return (
     <FormControl marginY={2} isInvalid={isInvalid}>
-      <FormControl.Label mb={2} _text={color ? {color} : undefined}>
+      <FormControl.Label
+        mb={2}
+        _text={color ? {color} : undefined}
+        fontFamily={'Poppins'}
+        fontWeight={'400'}
+        fontSize={14}>
         {label}
       </FormControl.Label>
       <Input
@@ -25,13 +30,13 @@ const PasswordInput = ({
         }}
         placeholder={placeholder}
         bgColor={'#FFFFFF'}
-        borderColor={'#E9EDF6'}
-        _focus={{borderColor: '#506FBD'}}
+        _focus={{borderColor: '#FFFFFF'}}
         secureTextEntry={!show}
-        fontFamily={'muli'}
+        fontFamily={'Poppins'}
         letterSpacing={1}
         fontSize={'14px'}
-        style={!show && value?.length && {fontSize: 16, letterSpacing: 2}}
+        borderColor={'#FFF'}
+        style={!show && value?.length && {fontSize: 14}}
         rightElement={
           <IconButton
             onPress={() => {
