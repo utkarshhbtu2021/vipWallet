@@ -5,10 +5,11 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {DashboardScreenImg, DrawerImages} from '../asserts/images/image';
+import DrawerModule from './Drawer';
 
 const CustomDrawerContent = props => {
   return (
-    <DrawerContentScrollView  style={{backgroundColor: '#0F1621'}} {...props}>
+    <DrawerContentScrollView style={{backgroundColor: '#0F1621'}} {...props}>
       <View style={styles.drawerHeader}>
         <Image source={DrawerImages.userIcon} style={styles.userIcon} />
         <Text style={styles.userName}>John Doe</Text>
@@ -16,14 +17,11 @@ const CustomDrawerContent = props => {
       <DrawerItemList {...props} />
       <View
         style={{
-          backgroundColor: 'red',
-          flex: 1,
+          backgroundColor: '#FFF',
           borderWidth: 1,
-          height: '100%',
+          height: 1000,
         }}>
-        <TouchableOpacity style={{borderWidth: 1}}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+        <DrawerModule />
       </View>
     </DrawerContentScrollView>
   );
@@ -41,7 +39,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     marginTop: 10,
-    color:'#fff',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
