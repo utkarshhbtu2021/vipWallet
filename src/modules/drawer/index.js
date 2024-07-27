@@ -1,14 +1,14 @@
 import {View, Text, Linking, Alert, Share} from 'react-native';
 import React from 'react';
-
-import FietCurrencyScreen from '../screens/FietCurrency';
-import ProfileScreen from '../screens/ProfileScreen';
-
-import {getToken} from '../keyChain/keychain';
-
-import config from '../config';
-import URL from '../api/url';
 import axios from 'axios';
+
+import FietCurrencyScreen from '../../screens/FietCurrency';
+import ProfileScreen from '../../screens/ProfileScreen';
+
+import {getToken} from '../../keyChain/keychain';
+
+import config from '../../config';
+import URL from '../../api/url';
 
 const DrawerModule = () => {
   const onShare = async () => {
