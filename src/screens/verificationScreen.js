@@ -57,7 +57,8 @@ const VerificationScreen = ({navigation}) => {
       if (response.status === 201) {
         showToast('success', 'Verification successful!', 'bottom');
         setTimeout(() => {
-          navigation.navigate('Home');
+          // navigation.navigate('Home');
+          navigation.navigate('PinCodeScreen');
         }, 2000);
       } else {
         showToast(
@@ -77,6 +78,10 @@ const VerificationScreen = ({navigation}) => {
     }
   };
 
+  const moveToScanner = () => {
+    navigation.navigate('ScannerScreen');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Loader loading={loading} />
@@ -93,11 +98,19 @@ const VerificationScreen = ({navigation}) => {
         <View style={styles.inputContainer}>
           <Image source={LoginScreenImg?.email} style={styles.icon} />
           <TextInput
-            style={styles.input}
+            style={{width: '90%'}}
             placeholder="Verification Code"
             value={verificationCode}
             onChangeText={value => setVerificationCode(value)}
           />
+          <TouchableOpacity
+            onPress={moveToScanner}
+            style={{
+              width: 45,
+              borderWidth: 1,
+              marginLeft: 20,
+              height: 45,
+            }}></TouchableOpacity>
         </View>
       </View>
       <View style={styles.bottomView}>
@@ -163,6 +176,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
+    width: '80%',
   },
   icon: {
     marginRight: 10,

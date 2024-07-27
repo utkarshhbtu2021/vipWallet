@@ -163,7 +163,7 @@ const LoginScreen = ({navigation}) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
           <TouchableOpacity

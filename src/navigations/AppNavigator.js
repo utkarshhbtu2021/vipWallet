@@ -13,16 +13,18 @@ import HomeScreen from '../screens/HomeScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import StackingScreen from '../screens/StackingScreen';
 import {DrawerImages, DashboardScreenImg} from '../asserts/images/image';
-import CustomDrawerContent from './customDrawerContent';
+import CustomDrawerContent from './CustomDrawerContent';
 import FietCurrencyScreen from '../screens/FietCurrency';
-import ProfileScreen from '../screens/profileScreen';
-import VerificationScreen from '../screens/verificationScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import VerificationScreen from '../screens/VerificationScreen';
 
 import {getToken} from '../keyChain/keychain';
 
 import config from '../config';
 import URL from '../api/url';
 import axios from 'axios';
+import Scanner from '../screens/ScannerScreen';
+import PinCodeScreen from '../screens/PinCodeScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -140,8 +142,12 @@ const DrawerNavigator = ({navigation}) => {
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         drawerLabelStyle: styles.drawerLabelStyle,
+        drawerStyle: {
+          width: 320,
+        },
+
       }}>
-      <Drawer.Screen
+        <Drawer.Screen
         name="Dashboard"
         component={BottomTabNavigator}
         options={{
@@ -151,6 +157,18 @@ const DrawerNavigator = ({navigation}) => {
           headerTitle: 'My Dashboard',
         }}
       />
+      
+      {/* 
+      
+      <Drawer.Screen
+        name="Settings"
+        component={HomeScreen}
+        options={{
+          drawerIcon: () => (
+            <Image source={DrawerImages.setting} style={styles.image} />
+          ),
+        }}
+      />
       <Drawer.Screen
         name="Fiat Currencies"
         component={FietCurrencyScreen}
@@ -158,15 +176,6 @@ const DrawerNavigator = ({navigation}) => {
           headerShown: false,
           drawerIcon: () => (
             <Image source={DrawerImages.fiet} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Settings"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.setting} style={styles.image} />
           ),
         }}
       />
@@ -271,7 +280,7 @@ const DrawerNavigator = ({navigation}) => {
             </Text>
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };
@@ -297,6 +306,16 @@ const AppNavigator = () => (
       <Stack.Screen
         name="VerificationScreen"
         component={VerificationScreen}
+        options={{headerShown: false}}
+      />
+        <Stack.Screen
+        name="ScannerScreen"
+        component={Scanner}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="PinCodeScreen"
+        component={PinCodeScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen

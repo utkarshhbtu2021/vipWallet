@@ -1,58 +1,57 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-
 import {DashboardScreenImg, DrawerImages} from '../asserts/images/image';
 
 const CustomDrawerContent = props => {
   return (
-    <DrawerContentScrollView style={{backgroundColor: '#0F1621'}} {...props}>
-      <View style={styles.drawerContent}>
-        <View style={styles.userInfoSection}>
-          <View style={{flexDirection: 'row', marginTop: 15}}>
-            <Image source={DrawerImages.Avatar} style={styles.avatar} />
-            <View style={{marginLeft: 15, flexDirection: 'column'}}>
-              <Text style={styles.title}>Ashfak Sayem</Text>
-              <Text style={styles.caption}>ashfaksayem@gmail.com</Text>
-            </View>
-          </View>
-        </View>
-        <DrawerItemList {...props} />
+    <DrawerContentScrollView  style={{backgroundColor: '#0F1621'}} {...props}>
+      <View style={styles.drawerHeader}>
+        <Image source={DrawerImages.userIcon} style={styles.userIcon} />
+        <Text style={styles.userName}>John Doe</Text>
+      </View>
+      <DrawerItemList {...props} />
+      <View
+        style={{
+          backgroundColor: 'red',
+          flex: 1,
+          borderWidth: 1,
+          height: '100%',
+        }}>
+        <TouchableOpacity style={{borderWidth: 1}}>
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </DrawerContentScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  drawerContent: {
-    flex: 1,
+  drawerHeader: {
+    padding: 20,
+    alignItems: 'center',
   },
-  userInfoSection: {
-    paddingLeft: 20,
-    paddingBottom: 32,
+  userIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
   },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: '600',
-    fontFamily: 'Poppins',
-    marginTop: 8,
+  userName: {
+    marginTop: 10,
+    color:'#fff',
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFFFFF',
   },
-  caption: {
-    marginTop: 3,
-    fontFamily: 'Poppins',
-    fontSize: 12,
-    fontWeight: '500',
-    color: '#FFFFFF',
+  logoutButton: {
+    marginTop: 20,
+    marginLeft: 10,
+  },
+  logoutText: {
+    fontSize: 16,
+    color: 'red',
   },
 });
 

@@ -49,7 +49,7 @@ const SignupScreen = ({navigation}) => {
       position,
       visibilityTime: 3000,
       autoHide: true,
-      topOffset: 30,
+      topOffset: 100,
       bottomOffset: 100,
       props: {
         backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
@@ -59,8 +59,12 @@ const SignupScreen = ({navigation}) => {
   };
 
   const validateInputs = () => {
-    if (!email || !password || password !== confirmPassword) {
-      showToast('error', 'Please check your input fields.', 'bottom');
+    if (!walletName || !firstName || !lastName || !email || !phoneNumber || !password || !confirmPassword) {
+      showToast('error', 'Please fill all input fields.');
+      return false;
+    }
+    if (password !== confirmPassword) {
+      showToast('error', 'Passwords do not match.');
       return false;
     }
     return true;
@@ -112,8 +116,8 @@ const SignupScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Loader loading={loading} />
       <Toast ref={ref => Toast.setRef(ref)} />
+      <Loader loading={loading} />
       <Header
         title="Create Wallet"
         navigation={navigation}
@@ -257,6 +261,7 @@ const styles = StyleSheet.create({
   },
   safeArea: {
     backgroundColor: '#FFF',
+    flex: 1,  // Ensures SafeAreaView takes full height
   },
   scrollContainer: {
     paddingBottom: 150,
@@ -291,39 +296,45 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    borderColor: '#F4F4F4',
     borderBottomWidth: 1,
     borderRadius: 5,
-    padding: 10,
+    borderColor: '#dcdcdc',
     marginBottom: 20,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    height: 45,
   },
   input: {
     flex: 1,
-    padding: 4,
+    fontSize: 16,
   },
   phoneInputContainer: {
     width: '100%',
-    height: 75,
+    height: 45,
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderColor: '#dcdcdc',
+    borderRadius: 5,
     backgroundColor: '#FFF',
   },
   phoneInputTextContainer: {
+    paddingVertical: 0,
     backgroundColor: '#FFF',
   },
   countryPickerButton: {
     padding: 5,
-    // borderWidth: 1,
-  },
-  cancelText: {
-    color: '#1E90FF',
-    textAlign: 'center',
-    marginTop: height * 0.01,
   },
   titleStyle: {
-    color: '#1E1E2D',
-    fontWeight: '600',
-    marginLeft: 85,
+    fontFamily: 'Poppins-Medium',
+    fontSize: 16,
+    fontWeight: '500',
+    marginLeft:100
+  },
+  cancelText: {
+    marginTop: 20,
+    fontSize: 16,
+    color: '#007bff',
+    textAlign: 'center',
   },
 });
 
