@@ -40,3 +40,22 @@ export async function deleteToken() {
   }
 }
 
+// Save data
+export const saveUserInfo = async (userInfo) => {
+  try {
+    await Keychain.setGenericPassword('userInfo', JSON.stringify(userInfo));
+  } catch (error) {
+    console.error('Failed to save user info:', error);
+  }
+};
+
+// Load data
+export const loadUserInfo = async () => {
+  try {
+    const credentials = await Keychain.getGenericPassword();
+    return credentials ? JSON.parse(credentials.password) : null;
+  } catch (error) {
+    console.error('Failed to load user info:', error);
+  }
+};
+

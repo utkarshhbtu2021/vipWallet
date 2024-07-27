@@ -1,11 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
+
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
 
-import {DashboardScreenImg, DrawerImages} from '../asserts/images/image';
+import {DrawerImages} from '../asserts/images/image';
+import DrawerModule from '../modules/drawer';
+
+const deviceHeight = Dimensions.get('screen').height;
 
 const CustomDrawerContent = props => {
   return (
@@ -20,7 +24,13 @@ const CustomDrawerContent = props => {
             </View>
           </View>
         </View>
-        <DrawerItemList {...props} />
+      </View>
+      <DrawerItemList {...props} />
+      <View
+        style={{
+          height: deviceHeight,
+        }}>
+        <DrawerModule />
       </View>
     </DrawerContentScrollView>
   );
@@ -32,6 +42,7 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingLeft: 20,
+    paddingTop: 22,
     paddingBottom: 32,
   },
   avatar: {

@@ -3,10 +3,15 @@ export const SplashScreenImg = {
 };
 
 export const LoginScreenImg = {
+  verification: require('./verification.png'),
   profile: require('./profile.png'),
   eye: require('./eye.png'),
   email: require('./email.png'),
   lock: require('./lock.png'),
+  arrow: require('./arrow.png'),
+  regUser: require('./regUser.png'),
+  countryIcon: require('./contryIcon.png'),
+
 };
 
 export const SignUpScreenImg = {
@@ -49,4 +54,3 @@ export const CurrenciesIcon = {
   Spanish: require('./Spanish.png'),
   Vietnam: require('./Vietnam.png'),
 };
-

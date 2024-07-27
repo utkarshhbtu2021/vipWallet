@@ -16,7 +16,7 @@ import {LoginScreenImg} from '../asserts/images/image';
 import FullFooterButton from '../components/fullFooterButton';
 
 import api from '../api';
-import {saveToken} from '../keyChain/keychain';
+import {saveToken, saveUserInfo} from '../keyChain/keychain';
 import {initialState, reducer} from '../allReducers/loginReducer';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -80,10 +80,11 @@ const LoginScreen = ({navigation}) => {
 
       // Save the token
       await saveToken(response.data.result.token);
+      await saveUserInfo(response.data.result);
 
       dispatch({type: 'SET_SUCCESS'});
       setTimeout(() => {
-        navigation.navigate('Home');
+        navigation.navigate('VerificationScreen');
       }, 2000);
     } catch (error) {
       setLoading(false);
@@ -96,7 +97,11 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#FFF'}}>
-      <Header title={'Add Wallet'} navigation={navigation} />
+      <Header
+        title={'Add Wallet'}
+        navigation={navigation}
+        addStyle={styles.titleStyle}
+      />
       <View style={styles.container}>
         <Loader loading={loading} />
         <Image source={LoginScreenImg?.profile} style={styles.profileImage} />
@@ -124,7 +129,7 @@ const LoginScreen = ({navigation}) => {
           />
         </View>
         <Text style={styles.label}>Password</Text>
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, {marginBottom: 40}]}>
           <Image source={LoginScreenImg?.lock} style={styles.icon} />
 
           <TextInput
@@ -141,7 +146,11 @@ const LoginScreen = ({navigation}) => {
         {state.loading ? (
           <ActivityIndicator />
         ) : (
-          <FullFooterButton BtnText={'Login'} onBtnPress={handleSubmit} />
+          <FullFooterButton
+            height={56}
+            BtnText={'Login'}
+            onBtnPress={handleSubmit}
+          />
         )}
         {state.error && <Text style={styles.error}>{state.error}</Text>}
         {state.success && (
@@ -154,7 +163,7 @@ const LoginScreen = ({navigation}) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -170,6 +179,11 @@ const LoginScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  titleStyle: {
+    color: '#1E1E2D',
+    fontWeight: '600',
+    marginLeft: 85,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -194,9 +208,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-
-    borderColor: '#ccc',
-    borderWidth: 1,
+    borderColor: '#F4F4F4',
+    borderBottomWidth: 1,
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
@@ -230,7 +243,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginBottom: 5,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '400',
+    color: '#A2A2A7',
   },
   error: {
     color: 'red',
