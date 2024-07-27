@@ -1,38 +1,44 @@
-import {View, Text, Linking, Alert, Share} from 'react-native';
 import React from 'react';
+import {
+  View,
+  Text,
+  Alert,
+  Share,
+  StyleSheet,
+  TouchableOpacity,
+  Image
+} from 'react-native';
 import axios from 'axios';
 
-import FietCurrencyScreen from '../../screens/FietCurrency';
-import ProfileScreen from '../../screens/ProfileScreen';
-
-import {getToken} from '../../keyChain/keychain';
-
+import { getToken } from '../../keyChain/keychain';
 import config from '../../config';
 import URL from '../../api/url';
+import { DrawerImages } from '../../asserts/images/image';
+
+const MenuItem = React.memo(({ source, text, onPress }) => (
+  <TouchableOpacity style={styles.row} onPress={onPress}>
+    <Image source={source} style={styles.image} />
+    <Text style={styles.text}>{text}</Text>
+  </TouchableOpacity>
+));
 
 const DrawerModule = () => {
   const onShare = async () => {
     try {
-      const {action, activityType} = await Share.share({
-        message: 'https://proctur.com', // Replace with your content
-        // You can also include title or URL if needed
+      const { action, activityType } = await Share.share({
+        message: 'https://play.google.com/store/apps/details?id=com.whitebitcoin&hl=en_IN',
       });
 
-      switch (action) {
-        case Share.sharedAction:
-          if (activityType) {
-            console.log('Shared with activity type:', activityType);
-          } else {
-            console.log('Content shared successfully');
-          }
-          break;
-        case Share.dismissedAction:
-          console.log('Share action dismissed');
-          break;
-        default:
-          console.log('Unhandled action:', action);
+      if (action === Share.sharedAction && activityType) {
+        console.log('Shared with activity type:', activityType);
+      } else if (action === Share.dismissedAction) {
+        console.log('Share action dismissed');
+      } else {
+        console.log('Content shared successfully');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error sharing content:', error);
+    }
   };
 
   const handleLogout = async () => {
@@ -50,15 +56,16 @@ const DrawerModule = () => {
             try {
               const authToken = await getToken();
               const response = await axios.post(
-                URL[config.env].BASE_URL + 'auth/logout',
-                '', // Body is empty
+                `${URL[config.env].BASE_URL}auth/logout`,
+                {},
                 {
                   headers: {
-                    Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
-                    accept: '*/*', // Match the curl request headers
+                    Authorization: `Bearer ${authToken}`,
+                    Accept: '*/*',
                   },
                 },
               );
+
               if (response.status === 201) {
                 navigation.navigate('Login');
               } else {
@@ -70,140 +77,59 @@ const DrawerModule = () => {
           },
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
+
   return (
-    <View>
-      <Text>DrawerModule</Text>
+    <View style={styles.container}>
+      <MenuItem source={DrawerImages.fiet} text="Fiet Currencies" />
+      <MenuItem source={DrawerImages.setting} text="Settings" />
+      <MenuItem source={DrawerImages.dividend} text="Block Matching Dividend" />
+      <MenuItem source={DrawerImages.refferal} text="Staking Referral Dividends" />
+      <MenuItem source={DrawerImages.refCode} text="My Referral Code" />
+      <MenuItem source={DrawerImages.security} text="Profile Setting" />
+      <MenuItem source={DrawerImages.security} text="Security" />
+      <MenuItem source={DrawerImages.calculator} text="Currency Calculator" />
+      <MenuItem source={DrawerImages.commanFunction} text="Common Function For VIP" />
+      <MenuItem source={DrawerImages.shareApp} text="Help And Support" />
+
+      <View style={styles.separator} />
+
+      <MenuItem source={DrawerImages.terms} text="Terms & Conditions" />
+      <MenuItem source={DrawerImages.logout} text="Logout" onPress={handleLogout} />
+      <MenuItem source={DrawerImages.shareApp} text="Share App" onPress={onShare} />
     </View>
   );
 };
 
-export default DrawerModule;
+const styles = StyleSheet.create({
+  container: {
+    borderWidth: 1,
+  },
+  row: {
+    flexDirection: 'row',
+    marginHorizontal: 12,
+    padding: 5,
+    paddingVertical: 14,
+  },
+  text: {
+    color: '#D1D3D4',
+    fontSize: 15,
+    fontWeight: '600',
+    marginLeft: 30,
+  },
+  image: {
+    height: 24,
+    width: 24,
+    marginRight: -15,
+  },
+  separator: {
+    height: .5,
+    backgroundColor: '#D1D3D4',
+    marginVertical: 20,
+    marginHorizontal: 12,
+  },
+});
 
-{
-  /* 
-      
-      <Drawer.Screen
-        name="Settings"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.setting} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Fiat Currencies"
-        component={FietCurrencyScreen}
-        options={{
-          headerShown: false,
-          drawerIcon: () => (
-            <Image source={DrawerImages.fiet} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Block Matching Dividend"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.dividend} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Staking Referral Dividends"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.refferal} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="My Referral Code"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.refCode} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Security"
-        component={ProfileScreen}
-        options={{
-          headerShown: false,
-          drawerIcon: () => (
-            <Image source={DrawerImages.security} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Currency Calculator"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.calculator} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Common Function For Vip"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.commanFunction} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Help And Support"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.shareApp} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Terms and Conditions"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.terms} style={styles.image} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Logout"
-        component={DashboardScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.logout} style={styles.image} />
-          ),
-          // Call the handleLogout function when the item is pressed
-          drawerLabel: () => (
-            <Text onPress={handleLogout} style={styles.drawerLabel}>
-              Logout
-            </Text>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Share App"
-        component={HomeScreen}
-        options={{
-          drawerIcon: () => (
-            <Image source={DrawerImages.shareApp} style={styles.image} />
-          ),
-          drawerLabel: () => (
-            <Text onPress={onShare} style={styles.drawerLabel}>
-              Share App
-            </Text>
-          ),
-        }}
-      /> */
-}
+export default DrawerModule;
