@@ -1,11 +1,20 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {DashboardScreenImg, DrawerImages} from '../asserts/images/image';
 import DrawerModule from './Drawer';
+
+const deviceHeight = Dimensions.get('screen').height;
 
 const CustomDrawerContent = props => {
   return (
@@ -19,7 +28,7 @@ const CustomDrawerContent = props => {
         style={{
           backgroundColor: '#FFF',
           borderWidth: 1,
-          height: 1000,
+          height: deviceHeight,
         }}>
         <DrawerModule />
       </View>
