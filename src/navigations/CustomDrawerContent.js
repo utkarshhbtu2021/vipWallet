@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingLeft: 20,
-    paddingTop: 22,
-    paddingBottom: 32,
+    paddingTop: 12,
+    paddingBottom: 22,
   },
   avatar: {
     width: 50,

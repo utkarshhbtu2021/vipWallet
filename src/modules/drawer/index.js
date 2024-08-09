@@ -93,9 +93,7 @@ const DrawerModule = () => {
       <MenuItem source={DrawerImages.calculator} text="Currency Calculator" />
       <MenuItem source={DrawerImages.commanFunction} text="Common Function For VIP" />
       <MenuItem source={DrawerImages.shareApp} text="Help And Support" />
-
       <View style={styles.separator} />
-
       <MenuItem source={DrawerImages.terms} text="Terms & Conditions" />
       <MenuItem source={DrawerImages.logout} text="Logout" onPress={handleLogout} />
       <MenuItem source={DrawerImages.shareApp} text="Share App" onPress={onShare} />
@@ -105,7 +103,7 @@ const DrawerModule = () => {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   row: {
     flexDirection: 'row',
@@ -120,9 +118,9 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   image: {
-    height: 24,
-    width: 24,
-    marginRight: -15,
+    height: 20,
+    width: 20,
+    marginRight: -10,
   },
   separator: {
     height: .5,

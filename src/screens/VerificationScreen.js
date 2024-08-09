@@ -57,8 +57,8 @@ const VerificationScreen = ({navigation}) => {
       if (response.status === 201) {
         showToast('success', 'Verification successful!', 'bottom');
         setTimeout(() => {
-          // navigation.navigate('Home');
-          navigation.navigate('PinCodeScreen');
+          navigation.navigate('Home');
+          // navigation.navigate('PinCodeScreen');
         }, 2000);
       } else {
         showToast(
