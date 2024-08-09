@@ -17,6 +17,9 @@ import {getToken} from '../keyChain/keychain';
 import Loader from '../components/loader';
 import config from '../config';
 import URL from '../api/url';
+import Clipboard from '@react-native-clipboard/clipboard';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const VerificationScreen = ({navigation}) => {
   const [loading, setLoading] = useState(false);
@@ -36,6 +39,11 @@ const VerificationScreen = ({navigation}) => {
         textColor: '#000',
       },
     });
+  };
+
+  const paste = async () => {
+    const content = await Clipboard.getString(); // Get text from clipboard
+    setVerificationCode(content); // Set the clipboard text to the verificationCode state
   };
 
   const verifyCode = async () => {
@@ -104,13 +112,27 @@ const VerificationScreen = ({navigation}) => {
             onChangeText={value => setVerificationCode(value)}
           />
           <TouchableOpacity
+            onPress={paste}
+            style={{
+              paddingTop: 10,
+              width: 45,
+              height: 45,
+            }}>
+            <MaterialIcons name="content-paste" size={24} color={'#6B6B6B'} />
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={moveToScanner}
             style={{
+              paddingTop: 10,
               width: 45,
-              borderWidth: 1,
-              marginLeft: 20,
               height: 45,
-            }}></TouchableOpacity>
+            }}>
+            <MaterialCommunityIcons
+              name="qrcode-scan"
+              size={24}
+              color={'#6B6B6B'}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.bottomView}>

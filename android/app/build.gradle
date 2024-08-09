@@ -120,4 +120,27 @@ dependencies {
     }
 }
 
+project.ext.vectoricons = [
+  iconFontNames: [ 
+    'MaterialIcons.ttf', 
+    'FontAwesome.ttf', 
+    'Ionicons.ttf', 
+    'EvilIcons.ttf', 
+    'Entypo.ttf', 
+    'Feather.ttf', 
+    'FontAwesome5_Brands.ttf', 
+    'FontAwesome5_Regular.ttf', 
+    'FontAwesome5_Solid.ttf',
+    'MaterialCommunityIcons.ttf',
+    'Octicons.ttf',
+    'Zocial.ttf',
+    'SimpleLineIcons.ttf',
+    'Foundation.ttf',
+    'Typicons.ttf',
+    'WeatherIcons.ttf',
+    'AntDesign.ttf'
+  ]
+]
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
