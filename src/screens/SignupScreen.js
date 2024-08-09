@@ -19,7 +19,7 @@ import URL from '../api/url';
 import Header from '../components/header';
 import Loader from '../components/loader';
 import FullFooterButton from '../components/fullFooterButton';
-import {LoginScreenImg} from '../asserts/images/image';
+import {LoginScreenImg} from '../assets/images/image';
 
 const {width, height} = Dimensions.get('window');
 

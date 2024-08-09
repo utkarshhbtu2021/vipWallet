@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import {DashboardScreenImg} from '../../asserts/images/image';
+import {DashboardScreenImg} from '../../assets/images/image';
 
 const HeaderNav = ({heading, toggleDrawer}) => {
   return (

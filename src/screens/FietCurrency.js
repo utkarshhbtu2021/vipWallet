@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Header from '../components/header';
 import SearchBox from '../components/searchBox';
-import {CurrenciesIcon} from '../asserts/images/image';
+import {CurrenciesIcon} from '../assets/images/image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const FiatCurrencyScreen = ({navigation}) => {
