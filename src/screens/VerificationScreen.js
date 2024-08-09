@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 
-import {LoginScreenImg} from '../asserts/images/image';
+import {LoginScreenImg} from '../assets/images/image';
 import FullFooterButton from '../components/fullFooterButton';
 import {getToken} from '../keyChain/keychain';
 import Loader from '../components/loader';

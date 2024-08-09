@@ -1,6 +1,6 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import {LoginScreenImg} from '../asserts/images/image';
+import {LoginScreenImg} from '../assets/images/image';
 
 export default function Header({
   title,

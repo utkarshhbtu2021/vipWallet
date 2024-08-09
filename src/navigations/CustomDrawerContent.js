@@ -6,7 +6,7 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 
-import {DrawerImages} from '../asserts/images/image';
+import {DrawerImages} from '../assets/images/image';
 import DrawerModule from '../modules/drawer';
 
 const deviceHeight = Dimensions.get('screen').height;

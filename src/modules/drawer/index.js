@@ -13,7 +13,7 @@ import axios from 'axios';
 import { getToken } from '../../keyChain/keychain';
 import config from '../../config';
 import URL from '../../api/url';
-import { DrawerImages } from '../../asserts/images/image';
+import { DrawerImages } from '../../assets/images/image';
 
 const MenuItem = React.memo(({ source, text, onPress }) => (
   <TouchableOpacity style={styles.row} onPress={onPress}>

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {digitCommaSeperation} from '../../../utils/commaSeparater';
-import {DashboardScreenImg} from '../../../asserts/images/image';
+import {DashboardScreenImg} from '../../../assets/images/image';
 
 const BlockMatching = () => {
   const renderItem = ({item, index}) => {

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
-import {SplashScreenImg} from '../asserts/images/image';
+import {SplashScreenImg} from '../assets/images/image';
 const {width, height} = Dimensions.get('window');
 
 const SplashScreen = ({navigation}) => {

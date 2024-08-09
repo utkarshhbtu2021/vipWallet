@@ -12,7 +12,7 @@ import {
 
 import Loader from '../components/loader';
 import Header from '../components/header';
-import {LoginScreenImg} from '../asserts/images/image';
+import {LoginScreenImg} from '../assets/images/image';
 import FullFooterButton from '../components/fullFooterButton';
 
 import api from '../api';

@@ -1,7 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import FullFooterButton from '../../../components/fullFooterButton';
-import {DashboardScreenImg} from '../../../asserts/images/image';
+import {DashboardScreenImg} from '../../../assets/images/image';
 
 const StackingCard = ({navigation}) => {
   const renderCircles = () => {
