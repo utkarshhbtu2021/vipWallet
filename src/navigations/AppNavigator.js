@@ -17,8 +17,13 @@ import CustomDrawerContent from './CustomDrawerContent';
 import VerificationScreen from '../screens/VerificationScreen';
 import Scanner from '../screens/ScannerScreen';
 import PinCodeScreen from '../screens/PinCodeScreen';
+import TermsConditionScreen from '../screens/TermsConditionScreen';
+import HelpSupportScreen from '../screens/HelpSupportScreen';
+import SupportCentreScreen from '../screens/SupportCentre';
+import FiatCurrencyScreen from '../screens/FietCurrency';
 
 import HomeScreen from '../screens/HomeScreen';
+
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -134,6 +139,26 @@ const AppNavigator = () => (
       <Stack.Screen
         name="Stacking"
         component={StackingScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TermsConditionScreen"
+        component={TermsConditionScreen}
+        options={{headerShown: false}}
+      /> 
+      <Stack.Screen
+        name="HelpSupportScreen"
+        component={HelpSupportScreen}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="SupportCentreScreen"
+        component={SupportCentreScreen}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="FiatCurrencyScreen"
+        component={FiatCurrencyScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

@@ -30,7 +30,7 @@ const CustomDrawerContent = props => {
         style={{
           height: deviceHeight,
         }}>
-        <DrawerModule />
+        <DrawerModule {...props}  />
       </View>
     </DrawerContentScrollView>
   );

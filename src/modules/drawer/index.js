@@ -6,27 +6,28 @@ import {
   Share,
   StyleSheet,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native';
 import axios from 'axios';
 
-import { getToken } from '../../keyChain/keychain';
+import {getToken} from '../../keyChain/keychain';
 import config from '../../config';
 import URL from '../../api/url';
-import { DrawerImages } from '../../assets/images/image';
+import {DrawerImages} from '../../assets/images/image';
 
-const MenuItem = React.memo(({ source, text, onPress }) => (
+const MenuItem = React.memo(({source, text, onPress}) => (
   <TouchableOpacity style={styles.row} onPress={onPress}>
     <Image source={source} style={styles.image} />
     <Text style={styles.text}>{text}</Text>
   </TouchableOpacity>
 ));
 
-const DrawerModule = () => {
+const DrawerModule = props => {
   const onShare = async () => {
     try {
-      const { action, activityType } = await Share.share({
-        message: 'https://play.google.com/store/apps/details?id=com.whitebitcoin&hl=en_IN',
+      const {action, activityType} = await Share.share({
+        message:
+          'https://play.google.com/store/apps/details?id=com.whitebitcoin&hl=en_IN',
       });
 
       if (action === Share.sharedAction && activityType) {
@@ -77,26 +78,49 @@ const DrawerModule = () => {
           },
         },
       ],
-      { cancelable: false },
+      {cancelable: false},
     );
   };
 
   return (
     <View style={styles.container}>
-      <MenuItem source={DrawerImages.fiet} text="Fiet Currencies" />
+      <MenuItem source={DrawerImages.fiet} text="Fiet Currencies" 
+      onPress={() => props.navigation.navigate('FiatCurrencyScreen')}/>
       <MenuItem source={DrawerImages.setting} text="Settings" />
       <MenuItem source={DrawerImages.dividend} text="Block Matching Dividend" />
-      <MenuItem source={DrawerImages.refferal} text="Staking Referral Dividends" />
+      <MenuItem
+        source={DrawerImages.refferal}
+        text="Staking Referral Dividends"
+      />
       <MenuItem source={DrawerImages.refCode} text="My Referral Code" />
       <MenuItem source={DrawerImages.security} text="Profile Setting" />
       <MenuItem source={DrawerImages.security} text="Security" />
       <MenuItem source={DrawerImages.calculator} text="Currency Calculator" />
-      <MenuItem source={DrawerImages.commanFunction} text="Common Function For VIP" />
-      <MenuItem source={DrawerImages.shareApp} text="Help And Support" />
+      <MenuItem
+        source={DrawerImages.commanFunction}
+        text="Common Function For VIP"
+      />
+      <MenuItem
+        source={DrawerImages.shareApp}
+        text="Help And Support"
+        onPress={() => props.navigation.navigate('HelpSupportScreen')}
+      />
       <View style={styles.separator} />
-      <MenuItem source={DrawerImages.terms} text="Terms & Conditions" />
-      <MenuItem source={DrawerImages.logout} text="Logout" onPress={handleLogout} />
-      <MenuItem source={DrawerImages.shareApp} text="Share App" onPress={onShare} />
+      <MenuItem
+        source={DrawerImages.terms}
+        text="Terms & Conditions"
+        onPress={() => props.navigation.navigate('TermsConditionScreen')}
+      />
+      <MenuItem
+        source={DrawerImages.logout}
+        text="Logout"
+        onPress={handleLogout}
+      />
+      <MenuItem
+        source={DrawerImages.shareApp}
+        text="Share App"
+        onPress={onShare}
+      />
     </View>
   );
 };
@@ -123,7 +147,7 @@ const styles = StyleSheet.create({
     marginRight: -10,
   },
   separator: {
-    height: .5,
+    height: 0.5,
     backgroundColor: '#D1D3D4',
     marginVertical: 20,
     marginHorizontal: 12,

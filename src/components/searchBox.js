@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TextInput, View, Image} from 'react-native';
-import {CurrenciesIcon} from '../asserts/images/image';
+import {CurrenciesIcon} from '../assets/images/image';
 
 export default function SearchBox({
   search,

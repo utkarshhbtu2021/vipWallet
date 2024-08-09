@@ -111,15 +111,7 @@ const VerificationScreen = ({navigation}) => {
             value={verificationCode}
             onChangeText={value => setVerificationCode(value)}
           />
-          <TouchableOpacity
-            onPress={paste}
-            style={{
-              paddingTop: 10,
-              width: 45,
-              height: 45,
-            }}>
-            <MaterialIcons name="content-paste" size={24} color={'#6B6B6B'} />
-          </TouchableOpacity>
+
           <TouchableOpacity
             onPress={moveToScanner}
             style={{
@@ -132,6 +124,15 @@ const VerificationScreen = ({navigation}) => {
               size={24}
               color={'#6B6B6B'}
             />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={paste}
+            style={{
+              paddingTop: 10,
+              width: 45,
+              height: 45,
+            }}>
+            <MaterialIcons name="content-paste" size={24} color={'#6B6B6B'} />
           </TouchableOpacity>
         </View>
       </View>
