@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet } from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -24,7 +24,12 @@ import FiatCurrencyScreen from '../screens/FietCurrency';
 import ProfileScreen from '../screens/ProfileScreen';
 
 import HomeScreen from '../screens/HomeScreen';
-
+import ContactManagerScreen from '../screens/ContactManager';
+import DirectAffiliateScreen from '../screens/DirectAffiliate';
+import EarnMoreDividendScreen from '../screens/EarnMoreDiv';
+import RegisterAffiliateScreen from '../screens/RegisterAffiliate';
+import StackingAffiliateScreen from '../screens/StackingAffiliate';
+import TotalAffiliateScreen from '../screens/TotalAffiliate';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -73,7 +78,6 @@ const BottomTabNavigator = () => (
 );
 
 const DrawerNavigator = ({navigation}) => {
-
   return (
     <Drawer.Navigator
       initialRouteName="Dashboard"
@@ -83,9 +87,8 @@ const DrawerNavigator = ({navigation}) => {
         drawerStyle: {
           width: 320,
         },
-
       }}>
-        <Drawer.Screen
+      <Drawer.Screen
         name="Dashboard"
         component={BottomTabNavigator}
         options={{
@@ -122,12 +125,12 @@ const AppNavigator = () => (
         component={VerificationScreen}
         options={{headerShown: false}}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="ScannerScreen"
         component={Scanner}
         options={{headerShown: false}}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="PinCodeScreen"
         component={PinCodeScreen}
         options={{headerShown: false}}
@@ -146,25 +149,55 @@ const AppNavigator = () => (
         name="TermsConditionScreen"
         component={TermsConditionScreen}
         options={{headerShown: false}}
-      /> 
+      />
       <Stack.Screen
         name="HelpSupportScreen"
         component={HelpSupportScreen}
         options={{headerShown: false}}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="SupportCentreScreen"
         component={SupportCentreScreen}
         options={{headerShown: false}}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="FiatCurrencyScreen"
         component={FiatCurrencyScreen}
         options={{headerShown: false}}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ContactManagerScreen"
+        component={ContactManagerScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DirectAffiliateScreen"
+        component={DirectAffiliateScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EarnMoreDividendScreen"
+        component={EarnMoreDividendScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RegisterAffiliateScreen"
+        component={RegisterAffiliateScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="StackingAffiliateScreen"
+        component={StackingAffiliateScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TotalAffiliateScreen"
+        component={TotalAffiliateScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

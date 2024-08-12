@@ -142,24 +142,38 @@ const DrawerModule = props => {
     'Common Function For VIP': [
       {
         text: 'Direct Affiliate',
-        onPress: () => console.log('Direct Affiliate'),
+        onPress: () => props.navigation.navigate('DirectAffiliateScreen'),
       },
       {
         text: 'Register Affiliate',
-        onPress: () => console.log('Register Affiliate'),
+        onPress: () => props.navigation.navigate('RegisterAffiliateScreen'),
       },
       {
         text: 'Staking Affiliate',
-        onPress: () => console.log('Staking Affiliate'),
+        onPress: () => props.navigation.navigate('StackingAffiliateScreen'),
       },
-      {text: 'Total Affiliate', onPress: () => console.log('Total Affiliate')},
-      {text: 'Contact Manager', onPress: () => console.log('Contact Manager')},
+      {text: 'Total Affiliate', onPress: () => props.navigation.navigate('TotalAffiliateScreen')},
+      {text: 'Contact Manager', onPress: () => props.navigation.navigate('ContactManagerScreen')},
       {
         text: 'Earn More Dividend (Upgrade)',
-        onPress: () => console.log('Earn More Dividend'),
+        onPress: () => props.navigation.navigate('EarnMoreDividendScreen'),
       },
     ],
     'Profile Setting': [
+      {text: 'Change Email', onPress: () => console.log('Change Email')},
+      {
+        text: 'Change Password',
+        onPress: () => props.navigation.navigate('ProfileScreen'),
+      },
+    ],
+    'Security': [
+      {text: 'Change Email', onPress: () => console.log('Change Email')},
+      {
+        text: 'Change Password',
+        onPress: () => props.navigation.navigate('ProfileScreen'),
+      },
+    ],
+    'Settings': [
       {text: 'Change Email', onPress: () => console.log('Change Email')},
       {
         text: 'Change Password',
