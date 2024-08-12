@@ -39,11 +39,19 @@ const MenuItem = React.memo(
 
 const DrawerModule = props => {
   const [openItems, setOpenItems] = useState({});
+  const [openSubItems, setOpenSubItems] = useState({});
 
   const handleToggle = item => {
     setOpenItems(prev => ({
       ...prev,
       [item]: !prev[item],
+    }));
+  };
+
+  const handleSubToggle = (parentItem, subItem) => {
+    setOpenSubItems(prev => ({
+      ...prev,
+      [`${parentItem}_${subItem}`]: !prev[`${parentItem}_${subItem}`],
     }));
   };
 
@@ -152,8 +160,14 @@ const DrawerModule = props => {
         text: 'Staking Affiliate',
         onPress: () => props.navigation.navigate('StackingAffiliateScreen'),
       },
-      {text: 'Total Affiliate', onPress: () => props.navigation.navigate('TotalAffiliateScreen')},
-      {text: 'Contact Manager', onPress: () => props.navigation.navigate('ContactManagerScreen')},
+      {
+        text: 'Total Affiliate',
+        onPress: () => props.navigation.navigate('TotalAffiliateScreen'),
+      },
+      {
+        text: 'Contact Manager',
+        onPress: () => props.navigation.navigate('ContactManagerScreen'),
+      },
       {
         text: 'Earn More Dividend (Upgrade)',
         onPress: () => props.navigation.navigate('EarnMoreDividendScreen'),
@@ -163,21 +177,46 @@ const DrawerModule = props => {
       {text: 'Change Email', onPress: () => console.log('Change Email')},
       {
         text: 'Change Password',
-        onPress: () => props.navigation.navigate('ProfileScreen'),
+        onPress: () => console.log('Change Email'),
       },
     ],
-    'Security': [
-      {text: 'Change Email', onPress: () => console.log('Change Email')},
+    Security: [
+      {
+        text: 'C2 Authentication',
+        onPress: () => console.log('C2 Authentication'),
+        subItems: [
+          {
+            text: 'Email Authentication',
+            onPress: () => console.log('Sub Item 1'),
+          },
+          {
+            text: 'Security Key Authentication',
+            onPress: () => console.log('Sub Item 2'),
+          },
+        ],
+      },
       {
         text: 'Change Password',
         onPress: () => props.navigation.navigate('ProfileScreen'),
       },
-    ],
-    'Settings': [
-      {text: 'Change Email', onPress: () => console.log('Change Email')},
+      {text: 'Change Pin', onPress: () => console.log('Change Pin')},
       {
-        text: 'Change Password',
-        onPress: () => props.navigation.navigate('ProfileScreen'),
+        text: 'Private Key Regenerate',
+        onPress: () => console.log('Private Key Regenerate'),
+      },
+      {text: 'Disable Account', onPress: () => console.log('Disable Account')},
+      {
+        text: 'Create transaction Pin',
+        onPress: () => console.log('Create transaction Pin'),
+      },
+    ],
+    Settings: [
+      {
+        text: 'Limit and Feature',
+        onPress: () => console.log('Limit and Feature'),
+        subItems: [
+          {text: 'Send Currency', onPress: () => console.log('Sub Item 1')},
+        ],
       },
     ],
   };
@@ -197,9 +236,44 @@ const DrawerModule = props => {
           {item.toggle && openItems[item.text] && (
             <View style={styles.submenu}>
               {submenuItems[item.text]?.map((subItem, subIndex) => (
-                <TouchableOpacity key={subIndex} onPress={subItem.onPress}>
-                  <Text style={styles.submenuText}>{subItem.text}</Text>
-                </TouchableOpacity>
+                <View key={subIndex}>
+                  <TouchableOpacity
+                    style={styles.submenuItem}
+                    onPress={subItem.onPress}>
+                    <Text style={styles.submenuText}>{subItem.text}</Text>
+                    {subItem.subItems && (
+                      <TouchableOpacity
+                        style={{marginLeft: 'auto', marginRight: 20}}
+                        onPress={() =>
+                          handleSubToggle(item.text, subItem.text)
+                        }>
+                        <MaterialCommunityIcons
+                          name={
+                            openSubItems[`${item.text}_${subItem.text}`]
+                              ? 'chevron-up'
+                              : 'chevron-down'
+                          }
+                          size={24}
+                          color={'#FFF'}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </TouchableOpacity>
+                  {subItem.subItems &&
+                    openSubItems[`${item.text}_${subItem.text}`] && (
+                      <View style={styles.subsubmenu}>
+                        {subItem.subItems.map((subSubItem, subSubIndex) => (
+                          <TouchableOpacity
+                            key={subSubIndex}
+                            onPress={subSubItem.onPress}>
+                            <Text style={styles.subsubmenuText}>
+                              {subSubItem.text}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    )}
+                </View>
               ))}
             </View>
           )}
@@ -240,11 +314,25 @@ const styles = StyleSheet.create({
     marginLeft: 60,
     marginVertical: 8,
   },
+  submenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   submenuText: {
     color: '#D1D3D4',
     fontSize: 14,
     fontWeight: '400',
     paddingVertical: 5,
+  },
+  subsubmenu: {
+    marginLeft: 30,
+    marginVertical: 8,
+  },
+  subsubmenuText: {
+    color: '#D1D3D4',
+    fontSize: 13,
+    fontWeight: '300',
+    paddingVertical: 4,
   },
 });
 
