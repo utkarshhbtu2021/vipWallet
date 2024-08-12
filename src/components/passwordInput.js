@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Image} from 'react-native';
 import {FormControl, IconButton, Input} from 'native-base';
 
-import {LoginScreenImg} from '../asserts/images/image';
+import {LoginScreenImg} from '../assets/images/image';
 
 const PasswordInput = ({
   value,

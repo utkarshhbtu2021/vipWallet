@@ -19,6 +19,9 @@ const HelpSupportScreen = ({navigation}) => {
         addStyle={styles.titleStyle}
         headerRight={headerRight}
       />
+      <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+        <Text>You have not added any support till now</Text>
+      </View>
     </View>
   );
 };
@@ -26,6 +29,7 @@ const HelpSupportScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'#FFF'
   },
   titleStyle: {
     color: '#1E1E2D',
@@ -35,7 +39,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     borderRadius: 5,
-    backgroundColor: '#007BFF', // You can choose any color
+    backgroundColor: 'grey', // You can choose any color
     marginRight: 10,
   },
   buttonText: {

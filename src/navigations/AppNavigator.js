@@ -21,6 +21,7 @@ import TermsConditionScreen from '../screens/TermsConditionScreen';
 import HelpSupportScreen from '../screens/HelpSupportScreen';
 import SupportCentreScreen from '../screens/SupportCentre';
 import FiatCurrencyScreen from '../screens/FietCurrency';
+import ProfileScreen from '../screens/ProfileScreen';
 
 import HomeScreen from '../screens/HomeScreen';
 
@@ -159,6 +160,11 @@ const AppNavigator = () => (
        <Stack.Screen
         name="FiatCurrencyScreen"
         component={FiatCurrencyScreen}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

@@ -1,6 +1,13 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
 import Header from '../components/header';
+import FooterButtons from '../components/footerBtn';
 
 const SupportCentreScreen = ({navigation}) => {
   return (
@@ -10,6 +17,23 @@ const SupportCentreScreen = ({navigation}) => {
         navigation={navigation}
         addStyle={styles.titleStyle}
       />
+      <View style={{flex: 1, marginTop: 15}}>
+        <TextInput
+          style={{
+            borderWidth: 0.8,
+            marginHorizontal: 20,
+            height: 120,
+            borderRadius: 5,
+            borderColor: 'grey',
+          }}
+          multiline
+        />
+      </View>
+      <FooterButtons
+        leftBtnText={'Submit'}
+        rightBtnText={'Cancel'}
+        onRightBtnPress={() => navigation.pop()}
+      />
     </View>
   );
 };
@@ -17,6 +41,7 @@ const SupportCentreScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF',
   },
   titleStyle: {
     color: '#1E1E2D',

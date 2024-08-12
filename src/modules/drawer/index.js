@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,22 +7,46 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Animated,
 } from 'react-native';
 import axios from 'axios';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {getToken} from '../../keyChain/keychain';
 import config from '../../config';
 import URL from '../../api/url';
 import {DrawerImages} from '../../assets/images/image';
 
-const MenuItem = React.memo(({source, text, onPress}) => (
-  <TouchableOpacity style={styles.row} onPress={onPress}>
-    <Image source={source} style={styles.image} />
-    <Text style={styles.text}>{text}</Text>
-  </TouchableOpacity>
-));
+const MenuItem = React.memo(
+  ({source, text, onPress, toggle, isOpen, onToggle}) => (
+    <TouchableOpacity
+      style={styles.row}
+      onPress={() => (toggle ? onToggle() : onPress())}>
+      <Image source={source} style={styles.image} />
+      <Text style={styles.text}>{text}</Text>
+      {toggle && (
+        <Animated.View style={{marginLeft: 'auto', marginRight: 3}}>
+          <MaterialCommunityIcons
+            name={isOpen ? 'chevron-up' : 'chevron-down'}
+            size={24}
+            color={'#FFF'}
+          />
+        </Animated.View>
+      )}
+    </TouchableOpacity>
+  ),
+);
 
 const DrawerModule = props => {
+  const [openItems, setOpenItems] = useState({});
+
+  const handleToggle = item => {
+    setOpenItems(prev => ({
+      ...prev,
+      [item]: !prev[item],
+    }));
+  };
+
   const onShare = async () => {
     try {
       const {action, activityType} = await Share.share({
@@ -68,7 +92,7 @@ const DrawerModule = props => {
               );
 
               if (response.status === 201) {
-                navigation.navigate('Login');
+                props.navigation.navigate('Login');
               } else {
                 Alert.alert('Error', 'Failed to logout. Please try again.');
               }
@@ -82,45 +106,91 @@ const DrawerModule = props => {
     );
   };
 
+  const menuItems = [
+    {
+      source: DrawerImages.fiet,
+      text: 'Fiet Currencies',
+      onPress: () => props.navigation.navigate('FiatCurrencyScreen'),
+    },
+    {source: DrawerImages.setting, text: 'Settings', toggle: true},
+    {source: DrawerImages.dividend, text: 'Block Matching Dividend'},
+    {source: DrawerImages.refferal, text: 'Staking Referral Dividends'},
+    {source: DrawerImages.refCode, text: 'My Referral Code'},
+    {source: DrawerImages.security, text: 'Profile Setting', toggle: true},
+    {source: DrawerImages.security, text: 'Security', toggle: true},
+    {source: DrawerImages.calculator, text: 'Currency Calculator'},
+    {
+      source: DrawerImages.commanFunction,
+      text: 'Common Function For VIP',
+      toggle: true,
+    },
+    {
+      source: DrawerImages.shareApp,
+      text: 'Help And Support',
+      onPress: () => props.navigation.navigate('HelpSupportScreen'),
+    },
+    {
+      source: DrawerImages.terms,
+      text: 'Terms & Conditions',
+      onPress: () => props.navigation.navigate('TermsConditionScreen'),
+    },
+    {source: DrawerImages.logout, text: 'Logout', onPress: handleLogout},
+    {source: DrawerImages.shareApp, text: 'Share App', onPress: onShare},
+  ];
+
+  const submenuItems = {
+    'Common Function For VIP': [
+      {
+        text: 'Direct Affiliate',
+        onPress: () => console.log('Direct Affiliate'),
+      },
+      {
+        text: 'Register Affiliate',
+        onPress: () => console.log('Register Affiliate'),
+      },
+      {
+        text: 'Staking Affiliate',
+        onPress: () => console.log('Staking Affiliate'),
+      },
+      {text: 'Total Affiliate', onPress: () => console.log('Total Affiliate')},
+      {text: 'Contact Manager', onPress: () => console.log('Contact Manager')},
+      {
+        text: 'Earn More Dividend (Upgrade)',
+        onPress: () => console.log('Earn More Dividend'),
+      },
+    ],
+    'Profile Setting': [
+      {text: 'Change Email', onPress: () => console.log('Change Email')},
+      {
+        text: 'Change Password',
+        onPress: () => props.navigation.navigate('ProfileScreen'),
+      },
+    ],
+  };
+
   return (
     <View style={styles.container}>
-      <MenuItem source={DrawerImages.fiet} text="Fiet Currencies" 
-      onPress={() => props.navigation.navigate('FiatCurrencyScreen')}/>
-      <MenuItem source={DrawerImages.setting} text="Settings" />
-      <MenuItem source={DrawerImages.dividend} text="Block Matching Dividend" />
-      <MenuItem
-        source={DrawerImages.refferal}
-        text="Staking Referral Dividends"
-      />
-      <MenuItem source={DrawerImages.refCode} text="My Referral Code" />
-      <MenuItem source={DrawerImages.security} text="Profile Setting" />
-      <MenuItem source={DrawerImages.security} text="Security" />
-      <MenuItem source={DrawerImages.calculator} text="Currency Calculator" />
-      <MenuItem
-        source={DrawerImages.commanFunction}
-        text="Common Function For VIP"
-      />
-      <MenuItem
-        source={DrawerImages.shareApp}
-        text="Help And Support"
-        onPress={() => props.navigation.navigate('HelpSupportScreen')}
-      />
-      <View style={styles.separator} />
-      <MenuItem
-        source={DrawerImages.terms}
-        text="Terms & Conditions"
-        onPress={() => props.navigation.navigate('TermsConditionScreen')}
-      />
-      <MenuItem
-        source={DrawerImages.logout}
-        text="Logout"
-        onPress={handleLogout}
-      />
-      <MenuItem
-        source={DrawerImages.shareApp}
-        text="Share App"
-        onPress={onShare}
-      />
+      {menuItems.map((item, index) => (
+        <View key={index}>
+          <MenuItem
+            source={item.source}
+            text={item.text}
+            onPress={item.onPress}
+            toggle={item.toggle}
+            isOpen={openItems[item.text]}
+            onToggle={() => handleToggle(item.text)}
+          />
+          {item.toggle && openItems[item.text] && (
+            <View style={styles.submenu}>
+              {submenuItems[item.text]?.map((subItem, subIndex) => (
+                <TouchableOpacity key={subIndex} onPress={subItem.onPress}>
+                  <Text style={styles.submenuText}>{subItem.text}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+      ))}
     </View>
   );
 };
@@ -151,6 +221,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#D1D3D4',
     marginVertical: 20,
     marginHorizontal: 12,
+  },
+  submenu: {
+    marginLeft: 60,
+    marginVertical: 8,
+  },
+  submenuText: {
+    color: '#D1D3D4',
+    fontSize: 14,
+    fontWeight: '400',
+    paddingVertical: 5,
   },
 });
 
