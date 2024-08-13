@@ -23,13 +23,21 @@ import SupportCentreScreen from '../screens/SupportCentre';
 import FiatCurrencyScreen from '../screens/FietCurrency';
 import ProfileScreen from '../screens/ProfileScreen';
 
-import HomeScreen from '../screens/HomeScreen';
 import ContactManagerScreen from '../screens/ContactManager';
 import DirectAffiliateScreen from '../screens/DirectAffiliate';
 import EarnMoreDividendScreen from '../screens/EarnMoreDiv';
 import RegisterAffiliateScreen from '../screens/RegisterAffiliate';
 import StackingAffiliateScreen from '../screens/StackingAffiliate';
 import TotalAffiliateScreen from '../screens/TotalAffiliate';
+import ChangeEmailScreen from '../screens/ChangeEmail';
+import ChangeProfileScreen from '../screens/ChangeProfile';
+import CurrencyCalculatorScreen from '../screens/CurrencyCalculator';
+import TransactionPinScreen from '../screens/TransactionPin';
+import DeactivateAccountScreen from '../screens/DeactivateAccount';
+import BlockMatchingDividendScreen from '../screens/BlockMatchingDividend';
+import StackingReferralDividendScreen from '../screens/StackingReferralDividend';
+
+import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -198,6 +206,41 @@ const AppNavigator = () => (
       <Stack.Screen
         name="TotalAffiliateScreen"
         component={TotalAffiliateScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChangeEmailScreen"
+        component={ChangeEmailScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ChangeProfileScreen"
+        component={ChangeProfileScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CurrencyCalculatorScreen"
+        component={CurrencyCalculatorScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DeactivateAccountScreen"
+        component={DeactivateAccountScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TransactionPinScreen"
+        component={TransactionPinScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BlockMatchingDividendScreen"
+        component={BlockMatchingDividendScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="StackingReferralDividendScreen"
+        component={StackingReferralDividendScreen}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

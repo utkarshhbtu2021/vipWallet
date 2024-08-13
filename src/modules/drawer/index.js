@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {getToken} from '../../keyChain/keychain';
 import config from '../../config';
@@ -40,6 +41,10 @@ const MenuItem = React.memo(
 const DrawerModule = props => {
   const [openItems, setOpenItems] = useState({});
   const [openSubItems, setOpenSubItems] = useState({});
+
+  // Define auth variable based on your app's logic
+  const auth = true; // or some condition based on your app's logic
+  const sendCurr = true; // or some condition based on your app's logic
 
   const handleToggle = item => {
     setOpenItems(prev => ({
@@ -72,6 +77,26 @@ const DrawerModule = props => {
     } catch (error) {
       console.error('Error sharing content:', error);
     }
+  };
+
+  const handlePrivateKeyGenerate = async () => {
+    Alert.alert(
+      'Are you sure ?',
+      'You want to regenerate your private key',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Ok',
+          onPress: async () => {
+            console.log('abc');
+          },
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   const handleLogout = async () => {
@@ -121,12 +146,29 @@ const DrawerModule = props => {
       onPress: () => props.navigation.navigate('FiatCurrencyScreen'),
     },
     {source: DrawerImages.setting, text: 'Settings', toggle: true},
-    {source: DrawerImages.dividend, text: 'Block Matching Dividend'},
-    {source: DrawerImages.refferal, text: 'Staking Referral Dividends'},
-    {source: DrawerImages.refCode, text: 'My Referral Code'},
+    {
+      source: DrawerImages.dividend,
+      text: 'Block Matching Dividend',
+      onPress: () => props.navigation.navigate('BlockMatchingDividendScreen'),
+    },
+    {
+      source: DrawerImages.refferal,
+      text: 'Staking Referral Dividends',
+      onPress: () =>
+        props.navigation.navigate('StackingReferralDividendScreen'),
+    },
+    {
+      source: DrawerImages.refCode,
+      text: 'My Referral Code',
+      onPress: () => console.log('PLease Hold WBTC'),
+    },
     {source: DrawerImages.security, text: 'Profile Setting', toggle: true},
     {source: DrawerImages.security, text: 'Security', toggle: true},
-    {source: DrawerImages.calculator, text: 'Currency Calculator'},
+    {
+      source: DrawerImages.calculator,
+      text: 'Currency Calculator',
+      onPress: () => props.navigation.navigate('CurrencyCalculatorScreen'),
+    },
     {
       source: DrawerImages.commanFunction,
       text: 'Common Function For VIP',
@@ -174,10 +216,13 @@ const DrawerModule = props => {
       },
     ],
     'Profile Setting': [
-      {text: 'Change Email', onPress: () => console.log('Change Email')},
+      {
+        text: 'Change Email',
+        onPress: () => props.navigation.navigate('ChangeEmailScreen'),
+      },
       {
         text: 'Change Password',
-        onPress: () => console.log('Change Email'),
+        onPress: () => props.navigation.navigate('ChangeProfileScreen'),
       },
     ],
     Security: [
@@ -187,10 +232,12 @@ const DrawerModule = props => {
         subItems: [
           {
             text: 'Email Authentication',
+            auth,
             onPress: () => console.log('Sub Item 1'),
           },
           {
             text: 'Security Key Authentication',
+            auth,
             onPress: () => console.log('Sub Item 2'),
           },
         ],
@@ -199,15 +246,21 @@ const DrawerModule = props => {
         text: 'Change Password',
         onPress: () => props.navigation.navigate('ProfileScreen'),
       },
-      {text: 'Change Pin', onPress: () => console.log('Change Pin')},
+      {
+        text: 'Change Pin',
+        onPress: () => props.navigation.navigate('PinCodeScreen'),
+      },
       {
         text: 'Private Key Regenerate',
-        onPress: () => console.log('Private Key Regenerate'),
+        onPress: handlePrivateKeyGenerate,
       },
-      {text: 'Disable Account', onPress: () => console.log('Disable Account')},
+      {
+        text: 'Disable Account',
+        onPress: () => props.navigation.navigate('DeactivateAccountScreen'),
+      },
       {
         text: 'Create transaction Pin',
-        onPress: () => console.log('Create transaction Pin'),
+        onPress: () => props.navigation.navigate('TransactionPinScreen'),
       },
     ],
     Settings: [
@@ -215,7 +268,11 @@ const DrawerModule = props => {
         text: 'Limit and Feature',
         onPress: () => console.log('Limit and Feature'),
         subItems: [
-          {text: 'Send Currency', onPress: () => console.log('Sub Item 1')},
+          {
+            text: 'Send Currency',
+            sendCurr,
+            onPress: () => console.log('Sub Item 1'),
+          },
         ],
       },
     ],
@@ -263,13 +320,23 @@ const DrawerModule = props => {
                     openSubItems[`${item.text}_${subItem.text}`] && (
                       <View style={styles.subsubmenu}>
                         {subItem.subItems.map((subSubItem, subSubIndex) => (
-                          <TouchableOpacity
+                          <View
+                            style={{flexDirection: 'row'}}
                             key={subSubIndex}
                             onPress={subSubItem.onPress}>
                             <Text style={styles.subsubmenuText}>
                               {subSubItem.text}
                             </Text>
-                          </TouchableOpacity>
+                            {subSubItem.auth && auth && (
+                              <AntDesign
+                                name={'checkcircle'}
+                                size={10}
+                                color={'green'}
+                                style={{marginLeft: 8, paddingTop: 8}}
+                              />
+                            )}
+                            {subSubItem.sendCurr && sendCurr && <></>}
+                          </View>
                         ))}
                       </View>
                     )}
