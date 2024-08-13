@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
 
 import {
@@ -8,10 +8,23 @@ import {
 
 import {DrawerImages} from '../assets/images/image';
 import DrawerModule from '../modules/drawer';
+import {loadUserInfo} from '../keyChain/keychain';
 
 const deviceHeight = Dimensions.get('screen').height;
 
 const CustomDrawerContent = props => {
+  const [data, setData] = useState({});
+  useEffect(() => {
+    const checkIfFirstTime = async () => {
+      try {
+        const storeData = await loadUserInfo();
+        setData(storeData);
+      } catch (error) {
+        console.error('Failed', error);
+      }
+    };
+    checkIfFirstTime();
+  }, []);
   return (
     <DrawerContentScrollView style={{backgroundColor: '#0F1621'}} {...props}>
       <View style={styles.drawerContent}>
@@ -19,8 +32,11 @@ const CustomDrawerContent = props => {
           <View style={{flexDirection: 'row', marginTop: 15}}>
             <Image source={DrawerImages.Avatar} style={styles.avatar} />
             <View style={{marginLeft: 15, flexDirection: 'column'}}>
-              <Text style={styles.title}>Ashfak Sayem</Text>
-              <Text style={styles.caption}>ashfaksayem@gmail.com</Text>
+              <Text
+                style={
+                  styles.title
+                }>{`${data.firstName} ${data.lastName}`}</Text>
+              <Text style={styles.caption}>{data.email}</Text>
             </View>
           </View>
         </View>
@@ -30,7 +46,7 @@ const CustomDrawerContent = props => {
         style={{
           height: deviceHeight,
         }}>
-        <DrawerModule {...props}  />
+        <DrawerModule {...props} />
       </View>
     </DrawerContentScrollView>
   );
