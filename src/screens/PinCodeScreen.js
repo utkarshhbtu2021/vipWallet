@@ -6,8 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
 
+import {getToken, loadUserInfo} from '../keyChain/keychain';
+import config from '../config';
+import URL from '../api/url';
 const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'clear', 0];
 const initialPin = {a: '', b: '', c: '', d: ''};
 
@@ -15,12 +19,30 @@ const PinCodeScreen = ({navigation}) => {
   const [pin, setPin] = useState({...initialPin});
   const [hidden, setHidden] = useState(true);
   const [isFirstTime, setIsFirstTime] = useState(false);
+  const [prevPin, setprevPin] = useState('');
+
+  const showToast = (type, text1, position = 'top') => {
+    Toast.show({
+      type, // options: 'success', 'error', 'info'
+      text1,
+      position, // options: 'top', 'bottom'
+      visibilityTime: 3000, // duration in milliseconds
+      autoHide: true,
+      topOffset: 30,
+      bottomOffset: 40,
+      props: {
+        backgroundColor: type === 'success' ? '#28a745' : '#dc3545',
+        textColor: '#000',
+      },
+    });
+  };
 
   useEffect(() => {
     const checkIfFirstTime = async () => {
       try {
-        const storedPin = await AsyncStorage.getItem('userPin');
-        setIsFirstTime(!storedPin);
+        const storeData = await loadUserInfo();
+        setprevPin(storeData.pin);
+        setIsFirstTime(!storeData.pin);
       } catch (error) {
         console.error('Failed to check PIN:', error);
       }
@@ -70,23 +92,42 @@ const PinCodeScreen = ({navigation}) => {
 
   const savePin = async pinValue => {
     try {
-      await AsyncStorage.setItem('userPin', pinValue);
-      setPin({...initialPin});
-      navigation.navigate('NextScreen'); // Redirect to next screen
+      const authToken = await getToken();
+      const response = await axios.post(
+        `${URL[config.env].BASE_URL}auth/create-pin`,
+        {pin: pinValue},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            Accept: '*/*',
+          },
+        },
+      );
+
+      if (response.status === 201) {
+        showToast('success', 'Verification successful!');
+        setTimeout(() => {
+          navigation.navigate('Home');
+        }, 2000);
+      } else {
+        showToast('error', `Unexpected status code: ${response.status}`);
+      }
     } catch (error) {
-      console.error('Failed to save PIN:', error);
+      console.error('Error saving pin:', error);
+      showToast('error', 'Incorrect Pin');
     }
   };
 
   const verifyPin = async pinValue => {
     try {
-      const storedPin = await AsyncStorage.getItem('userPin');
-      if (pinValue === storedPin) {
+      if (pinValue === prevPin) {
         setPin({...initialPin});
-        navigation.navigate('NextScreen'); // Redirect to next screen
+        showToast('success', 'Verification successful!');
+        setTimeout(() => {
+          navigation.navigate('Home');
+        }, 2000);
       } else {
-        // Handle incorrect PIN scenario here, e.g., show a visual error message
-        console.warn('Incorrect PIN');
+        showToast('error', 'Incorrect Pin');
       }
     } catch (error) {
       console.error('Failed to verify PIN:', error);
@@ -102,6 +143,7 @@ const PinCodeScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Toast ref={ref => Toast.setRef(ref)} />
       <View style={styles.topContainer}>
         <View style={styles.optContainer}>
           {Object.keys(pin).map(pinKey => (
